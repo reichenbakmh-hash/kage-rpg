@@ -16,9 +16,9 @@ html,body{
   width:100%;
   height:100%;
   overflow:hidden;
-  background:#050811;
-  color:#fff;
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#050812;
+  color:white;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
 body{
@@ -41,15 +41,14 @@ canvas{
 .vignette{
   position:absolute;
   inset:0;
-  pointer-events:none;
   z-index:5;
-  background:
-    radial-gradient(
-      circle at 50% 46%,
-      transparent 32%,
-      rgba(3,6,15,.13) 58%,
-      rgba(0,0,0,.72) 100%
-    );
+  pointer-events:none;
+  background:radial-gradient(
+    circle at 50% 45%,
+    transparent 30%,
+    rgba(0,0,0,.12) 58%,
+    rgba(0,0,0,.72) 100%
+  );
 }
 
 .topbar{
@@ -57,97 +56,96 @@ canvas{
   top:16px;
   left:16px;
   right:16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
   z-index:10;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   pointer-events:none;
 }
 
 .logo,
-.progress{
-  border:1px solid rgba(255,255,255,.11);
-  background:rgba(7,12,24,.52);
-  backdrop-filter:blur(12px);
-  box-shadow:0 12px 35px rgba(0,0,0,.22);
-  border-radius:15px;
+.orbs{
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(7,12,24,.58);
+  backdrop-filter:blur(14px);
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  border-radius:16px;
 }
 
 .logo{
   padding:10px 14px;
 }
 
-.logo strong{
+.logo b{
   display:block;
-  letter-spacing:.3em;
-  color:#f6d99d;
+  color:#f4d18d;
   font-size:14px;
+  letter-spacing:.32em;
 }
 
-.logo span{
+.logo small{
   display:block;
   margin-top:3px;
-  color:rgba(255,255,255,.5);
-  font-size:9px;
+  color:rgba(255,255,255,.42);
+  font-size:8px;
   letter-spacing:.18em;
   text-transform:uppercase;
 }
 
-.progress{
+.orbs{
   display:flex;
   gap:7px;
-  padding:10px;
+  padding:10px 12px;
 }
 
 .orb{
   width:10px;
   height:10px;
   border-radius:50%;
-  background:rgba(255,255,255,.16);
-  transition:.3s;
+  background:#303746;
+  transition:.35s;
 }
 
-.orb.on{
-  background:#f4c977;
+.orb.active{
+  background:#f4ca75;
   box-shadow:
-    0 0 8px #f4c977,
-    0 0 22px rgba(244,201,119,.75);
+    0 0 8px #f4ca75,
+    0 0 20px rgba(244,202,117,.6);
 }
 
-.centerMessage{
+.message{
   position:absolute;
-  left:50%;
-  top:23%;
-  transform:translate(-50%,-50%);
   z-index:8;
+  top:22%;
+  left:50%;
+  width:min(90%,650px);
+  transform:translate(-50%,-50%);
   text-align:center;
-  pointer-events:none;
-  width:min(90vw,650px);
   opacity:0;
+  pointer-events:none;
   transition:opacity .35s;
 }
 
-.centerMessage.show{
+.message.visible{
   opacity:1;
 }
 
-.centerMessage h1{
+.message h1{
   margin:0;
-  font-size:clamp(28px,6vw,60px);
+  font-size:clamp(27px,7vw,58px);
   letter-spacing:.08em;
-  font-weight:800;
-  text-shadow:0 5px 30px rgba(0,0,0,.6);
+  text-shadow:0 5px 25px rgba(0,0,0,.65);
 }
 
-.centerMessage p{
-  margin:10px 0 0;
-  color:rgba(255,255,255,.68);
-  font-size:11px;
+.message p{
+  margin:9px 0 0;
+  color:rgba(255,255,255,.62);
+  font-size:10px;
   letter-spacing:.2em;
   text-transform:uppercase;
 }
 
-.startScreen{
+.start{
   position:absolute;
   inset:0;
   z-index:20;
@@ -157,100 +155,88 @@ canvas{
   background:
     radial-gradient(
       circle at 50% 40%,
-      rgba(49,75,110,.34),
-      transparent 40%
+      rgba(48,75,108,.32),
+      transparent 42%
     ),
-    linear-gradient(#050810,#09111c);
-  transition:
-    opacity .7s,
-    visibility .7s;
+    linear-gradient(
+      #050812,
+      #091522
+    );
+  transition:opacity .7s,visibility .7s;
 }
 
-.startScreen.hide{
+.start.hidden{
   opacity:0;
   visibility:hidden;
   pointer-events:none;
 }
 
-.startCard{
-  width:min(92vw,520px);
+.start-card{
+  width:min(90%,500px);
+  padding:30px;
   text-align:center;
-  padding:34px;
 }
 
 .kana{
-  color:#d5bd95;
-  font-size:11px;
-  letter-spacing:.5em;
-  margin-left:.5em;
+  color:#d7bd8e;
+  font-size:10px;
+  letter-spacing:.55em;
+  margin-left:.55em;
 }
 
-.startCard h1{
-  margin:14px 0 6px;
-  font-size:clamp(42px,12vw,86px);
-  letter-spacing:.12em;
+.start-card h1{
+  margin:13px 0 5px;
+  font-size:clamp(48px,14vw,88px);
+  letter-spacing:.16em;
 }
 
 .subtitle{
-  margin:0 auto 28px;
-  color:rgba(255,255,255,.55);
-  font-size:12px;
-  letter-spacing:.26em;
+  color:rgba(255,255,255,.45);
+  font-size:11px;
+  letter-spacing:.3em;
   text-transform:uppercase;
 }
 
-.startCard p{
-  color:rgba(255,255,255,.68);
-  line-height:1.7;
-  font-size:14px;
-  margin-bottom:30px;
+.start-card p{
+  max-width:430px;
+  margin:25px auto;
+  color:rgba(255,255,255,.62);
+  font-size:13px;
+  line-height:1.8;
 }
 
-.startButton{
+.start-button{
+  padding:14px 25px;
   border:1px solid rgba(244,201,119,.45);
-  background:
-    linear-gradient(
-      180deg,
-      rgba(244,201,119,.14),
-      rgba(244,201,119,.05)
-    );
-  color:#f8dda6;
   border-radius:999px;
-  padding:14px 26px;
-  font-size:13px;
-  letter-spacing:.22em;
+  background:rgba(244,201,119,.07);
+  color:#f5d796;
+  font-size:11px;
+  letter-spacing:.2em;
   text-transform:uppercase;
   cursor:pointer;
-  box-shadow:
-    0 0 25px rgba(244,201,119,.08),
-    inset 0 0 25px rgba(244,201,119,.03);
+  box-shadow:0 0 30px rgba(244,201,119,.08);
 }
 
-.instructions{
-  margin-top:18px !important;
-  color:rgba(255,255,255,.34) !important;
-  font-size:11px !important;
-}
-
-.bottomHint{
+.hint{
   position:absolute;
+  z-index:9;
+  bottom:18px;
   left:50%;
-  bottom:22px;
   transform:translateX(-50%);
-  z-index:8;
-  color:rgba(255,255,255,.45);
-  font-size:10px;
-  letter-spacing:.1em;
+  color:rgba(255,255,255,.42);
+  font-size:9px;
+  letter-spacing:.12em;
   text-transform:uppercase;
-  text-align:center;
+  white-space:nowrap;
   pointer-events:none;
 }
 
 .controls{
   position:absolute;
+  z-index:12;
   left:18px;
   bottom:18px;
-  z-index:12;
   display:none;
   grid-template-columns:repeat(3,46px);
   gap:5px;
@@ -259,33 +245,31 @@ canvas{
 .controls button{
   width:46px;
   height:46px;
-  border-radius:13px;
   border:1px solid rgba(255,255,255,.12);
-  background:rgba(6,11,21,.56);
+  border-radius:14px;
+  background:rgba(5,10,20,.58);
   color:rgba(255,255,255,.82);
   backdrop-filter:blur(10px);
   font-size:18px;
 }
 
-.controls .empty{
+.empty{
   visibility:hidden;
 }
 
 @media(max-width:700px){
-
   .controls{
     display:grid;
   }
 
-  .bottomHint{
-    bottom:16px;
-    right:14px;
+  .hint{
     left:auto;
+    right:14px;
     transform:none;
     text-align:right;
   }
 
-  .logo span{
+  .logo small{
     display:none;
   }
 }
@@ -303,11 +287,11 @@ canvas{
 <div class="topbar">
 
   <div class="logo">
-    <strong>KAGE</strong>
-    <span>Le sanctuaire oublié</span>
+    <b>KAGE</b>
+    <small>Le sanctuaire oublié</small>
   </div>
 
-  <div class="progress">
+  <div class="orbs">
     <div class="orb" id="orb1"></div>
     <div class="orb" id="orb2"></div>
     <div class="orb" id="orb3"></div>
@@ -315,30 +299,46 @@ canvas{
 
 </div>
 
-<div class="centerMessage" id="centerMessage">
+<div class="message" id="message">
   <h1 id="messageTitle"></h1>
-  <p id="messageSubtitle"></p>
+  <p id="messageText"></p>
 </div>
 
-<div class="bottomHint">
-  ZQSD / WASD / FLÈCHES • Explore l'île
+<div class="hint">
+  ZQSD • WASD • FLÈCHES • EXPLORE
 </div>
 
 <div class="controls">
-  <div class="empty"></div>
-  <button data-key="ArrowUp">▲</button>
+
   <div class="empty"></div>
 
-  <button data-key="ArrowLeft">◀</button>
-  <button data-key="ArrowDown">▼</button>
-  <button data-key="ArrowRight">▶</button>
+  <button data-key="ArrowUp">
+    ▲
+  </button>
+
+  <div class="empty"></div>
+
+  <button data-key="ArrowLeft">
+    ◀
+  </button>
+
+  <button data-key="ArrowDown">
+    ▼
+  </button>
+
+  <button data-key="ArrowRight">
+    ▶
+  </button>
+
 </div>
 
-<div class="startScreen" id="startScreen">
+<div class="start" id="start">
 
-  <div class="startCard">
+  <div class="start-card">
 
-    <div class="kana">影 • かげ</div>
+    <div class="kana">
+      影 • かげ
+    </div>
 
     <h1>KAGE</h1>
 
@@ -348,82 +348,87 @@ canvas{
 
     <p>
       Une petite île.<br>
-      Trois lumières.<br>
-      Une voyageuse bizarre.
+      Trois lumières perdues.<br>
+      Et une jeune voyageuse
+      que le sanctuaire semble attendre.
     </p>
 
-    <button class="startButton" id="startButton">
+    <button
+      class="start-button"
+      id="startButton"
+    >
       Entrer dans le monde
     </button>
 
-    <p class="instructions">
-      Le son est activé au démarrage.
-    </p>
-
   </div>
-
-</div>
 
 </div>
 
 <script>
 "use strict";
 
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+const canvas =
+  document.getElementById("canvas");
 
-const startScreen =
-  document.getElementById("startScreen");
+const ctx =
+  canvas.getContext("2d");
+
+const start =
+  document.getElementById("start");
 
 const startButton =
   document.getElementById("startButton");
 
-const centerMessage =
-  document.getElementById("centerMessage");
+const message =
+  document.getElementById("message");
 
 const messageTitle =
   document.getElementById("messageTitle");
 
-const messageSubtitle =
-  document.getElementById("messageSubtitle");
+const messageText =
+  document.getElementById("messageText");
 
-const orbUI = [
+const orbs = [
   document.getElementById("orb1"),
   document.getElementById("orb2"),
   document.getElementById("orb3")
 ];
 
-let width = 0;
-let height = 0;
-let dpr = 1;
+let W = 0;
+let H = 0;
+let DPR = 1;
 
 function resize(){
 
-  dpr = Math.min(
-    window.devicePixelRatio || 1,
-    2
-  );
+  DPR =
+    Math.min(
+      window.devicePixelRatio || 1,
+      2
+    );
 
-  width = window.innerWidth;
-  height = window.innerHeight;
+  W =
+    window.innerWidth;
+
+  H =
+    window.innerHeight;
 
   canvas.width =
-    Math.floor(width * dpr);
+    Math.floor(W * DPR);
 
   canvas.height =
-    Math.floor(height * dpr);
+    Math.floor(H * DPR);
 
   canvas.style.width =
-    width + "px";
+    W + "px";
 
   canvas.style.height =
-    height + "px";
+    H + "px";
 
   ctx.setTransform(
-    dpr,
+    DPR,
     0,
     0,
-    dpr,
+    DPR,
     0,
     0
   );
@@ -437,263 +442,203 @@ window.addEventListener(
 resize();
 
 
-/* ==============================
+/* =========================
    AUDIO
-================================ */
+========================= */
 
-let audioContext = null;
-let masterGain = null;
-let ambientStarted = false;
+let audio = null;
+let master = null;
 
 function initAudio(){
 
-  if(audioContext){
+  if(audio){
 
-    if(audioContext.state === "suspended"){
-      audioContext.resume();
+    if(audio.state === "suspended"){
+      audio.resume();
     }
 
     return;
   }
 
-  const AudioCtx =
+  const AudioContext =
     window.AudioContext ||
     window.webkitAudioContext;
 
-  if(!AudioCtx){
+  if(!AudioContext){
     return;
   }
 
-  audioContext = new AudioCtx();
+  audio =
+    new AudioContext();
 
-  masterGain =
-    audioContext.createGain();
+  master =
+    audio.createGain();
 
-  masterGain.gain.value = 0.055;
+  master.gain.value =
+    0.045;
 
-  masterGain.connect(
-    audioContext.destination
+  master.connect(
+    audio.destination
   );
 }
 
-function playTone(
+function tone(
   frequency,
-  duration = 0.15,
-  type = "sine",
-  volume = 0.25
+  duration,
+  volume = .2,
+  type = "sine"
 ){
 
-  if(
-    !audioContext ||
-    !masterGain
-  ){
+  if(!audio || !master){
     return;
   }
 
-  const oscillator =
-    audioContext.createOscillator();
+  const osc =
+    audio.createOscillator();
 
   const gain =
-    audioContext.createGain();
+    audio.createGain();
 
-  oscillator.type = type;
+  osc.type = type;
 
-  oscillator.frequency.setValueAtTime(
-    frequency,
-    audioContext.currentTime
-  );
+  osc.frequency.value =
+    frequency;
 
   gain.gain.setValueAtTime(
-    0.0001,
-    audioContext.currentTime
+    .0001,
+    audio.currentTime
   );
 
   gain.gain.exponentialRampToValueAtTime(
     volume,
-    audioContext.currentTime + 0.015
+    audio.currentTime + .02
   );
 
   gain.gain.exponentialRampToValueAtTime(
-    0.0001,
-    audioContext.currentTime + duration
+    .0001,
+    audio.currentTime + duration
   );
 
-  oscillator.connect(gain);
-  gain.connect(masterGain);
+  osc.connect(gain);
+  gain.connect(master);
 
-  oscillator.start();
+  osc.start();
 
-  oscillator.stop(
-    audioContext.currentTime +
+  osc.stop(
+    audio.currentTime +
     duration +
-    0.02
+    .03
   );
 }
 
-function playPickup(){
+function pickupSound(){
 
-  playTone(
-    523.25,
-    0.16,
-    "sine",
-    0.24
-  );
+  tone(523.25,.18,.22);
 
-  setTimeout(() => {
-
-    playTone(
+  setTimeout(
+    () => tone(
       783.99,
-      0.25,
-      "sine",
-      0.20
-    );
-
-  }, 100);
+      .3,
+      .18
+    ),
+    100
+  );
 }
 
-function playUnlock(){
+function unlockSound(){
 
   [
     392,
     523.25,
     659.25,
     783.99
-  ].forEach((frequency,index) => {
+  ].forEach(
+    (f,i) => {
 
-    setTimeout(() => {
-
-      playTone(
-        frequency,
-        0.45,
-        "sine",
-        0.18
+      setTimeout(
+        () => tone(
+          f,
+          .45,
+          .16
+        ),
+        i * 120
       );
 
-    }, index * 120);
-
-  });
-}
-
-function playFootstep(){
-
-  if(!audioContext){
-    return;
-  }
-
-  playTone(
-    92,
-    0.045,
-    "triangle",
-    0.025
+    }
   );
 }
 
-function startAmbient(){
+function stepSound(){
 
-  if(
-    ambientStarted ||
-    !audioContext ||
-    !masterGain
-  ){
-    return;
-  }
-
-  ambientStarted = true;
-
-  const oscillator =
-    audioContext.createOscillator();
-
-  const gain =
-    audioContext.createGain();
-
-  oscillator.type = "sine";
-  oscillator.frequency.value = 92;
-
-  gain.gain.value = 0.012;
-
-  oscillator.connect(gain);
-  gain.connect(masterGain);
-
-  oscillator.start();
-
-  function pulse(){
-
-    playTone(
-      196,
-      0.9,
-      "sine",
-      0.022
-    );
-
-    setTimeout(() => {
-
-      playTone(
-        246.94,
-        0.8,
-        "sine",
-        0.016
-      );
-
-    },180);
-  }
-
-  pulse();
-
-  setInterval(
-    pulse,
-    5000
+  tone(
+    90,
+    .045,
+    .018,
+    "triangle"
   );
 }
 
 
-/* ==============================
+/* =========================
    GAME STATE
-================================ */
+========================= */
 
-const keys = new Set();
+const keys =
+  new Set();
 
 const player = {
 
-  x: 0,
-  y: 3.1,
+  x:0,
 
-  speed: 2.9,
+  y:3.1,
 
-  bob: 0,
+  speed:2.7,
 
-  lastStep: 0
+  stepTimer:0
 
 };
 
 const shrine = {
-
-  x: 0,
-  y: -5.05
-
+  x:0,
+  y:-5
 };
 
 const spirits = [
 
   {
-    x: -3.9,
-    y: 0.8,
-    collected: false,
-    phase: 0
+    x:-3.7,
+    y:.7,
+    phase:0,
+    collected:false
   },
 
   {
-    x: 3.8,
-    y: -0.5,
-    collected: false,
-    phase: 2
+    x:3.6,
+    y:-.5,
+    phase:2,
+    collected:false
   },
 
   {
-    x: -2.4,
-    y: -3.2,
-    collected: false,
-    phase: 4
+    x:-2.4,
+    y:-3,
+    phase:4,
+    collected:false
   }
+
+];
+
+const trees = [
+
+  [-5,-2.2],
+  [-4.7,1.7],
+  [-3.8,2.8],
+  [-1.8,2.7],
+  [2,2.8],
+  [4.5,1.5],
+  [5,-1.8],
+  [4,-3.2],
+  [5.2,-3.7]
 
 ];
 
@@ -708,30 +653,17 @@ let time = 0;
 let cameraX = 0;
 let cameraY = 0;
 
-const trees = [
 
-  [-5.2,-2.2],
-  [-4.8,1.7],
-  [-3.9,2.8],
-
-  [4.6,1.5],
-  [5.1,-1.8],
-  [3.9,-3.2],
-
-  [-1.6,2.6],
-  [1.9,2.8],
-  [5.5,-3.7]
-
-];
-
-
-/* ==============================
+/* =========================
    INPUT
-================================ */
+========================= */
 
-function keyEvent(event,down){
+function setKey(
+  event,
+  down
+){
 
-  const allowed = [
+  const valid = [
 
     "ArrowUp",
     "ArrowDown",
@@ -749,7 +681,7 @@ function keyEvent(event,down){
   ];
 
   if(
-    allowed.includes(event.key)
+    valid.includes(event.key)
   ){
 
     event.preventDefault();
@@ -765,58 +697,60 @@ function keyEvent(event,down){
 
 window.addEventListener(
   "keydown",
-  event => keyEvent(event,true)
+  e => setKey(e,true)
 );
 
 window.addEventListener(
   "keyup",
-  event => keyEvent(event,false)
+  e => setKey(e,false)
 );
 
 document
 .querySelectorAll(".controls button")
-.forEach(button => {
+.forEach(
+  button => {
 
-  const key =
-    button.dataset.key;
+    const key =
+      button.dataset.key;
 
-  const down = event => {
+    const down =
+      event => {
 
-    event.preventDefault();
+        event.preventDefault();
 
-    keys.add(key);
-  };
+        keys.add(key);
+      };
 
-  const up = () => {
-    keys.delete(key);
-  };
+    const up =
+      () => keys.delete(key);
 
-  button.addEventListener(
-    "pointerdown",
-    down
-  );
+    button.addEventListener(
+      "pointerdown",
+      down
+    );
 
-  button.addEventListener(
-    "pointerup",
-    up
-  );
+    button.addEventListener(
+      "pointerup",
+      up
+    );
 
-  button.addEventListener(
-    "pointercancel",
-    up
-  );
+    button.addEventListener(
+      "pointercancel",
+      up
+    );
 
-  button.addEventListener(
-    "pointerleave",
-    up
-  );
+    button.addEventListener(
+      "pointerleave",
+      up
+    );
 
-});
+  }
+);
 
 
-/* ==============================
+/* =========================
    START
-================================ */
+========================= */
 
 startButton.addEventListener(
   "click",
@@ -824,12 +758,16 @@ startButton.addEventListener(
 
     initAudio();
 
-    startAmbient();
-
     started = true;
 
-    startScreen.classList.add(
-      "hide"
+    start.classList.add(
+      "hidden"
+    );
+
+    tone(
+      261.63,
+      .45,
+      .15
     );
 
     showMessage(
@@ -837,98 +775,91 @@ startButton.addEventListener(
       "Trois lumières errent encore sur l'île."
     );
 
-    playTone(
-      261.63,
-      0.4,
-      "sine",
-      0.17
-    );
-
     setTimeout(
       hideMessage,
-      3200
+      3000
     );
 
   }
 );
 
 
-/* ==============================
+/* =========================
    UI
-================================ */
+========================= */
 
 function showMessage(
   title,
-  subtitle
+  text
 ){
 
   messageTitle.textContent =
     title;
 
-  messageSubtitle.textContent =
-    subtitle;
+  messageText.textContent =
+    text;
 
-  centerMessage.classList.add(
-    "show"
+  message.classList.add(
+    "visible"
   );
 }
 
 function hideMessage(){
 
-  centerMessage.classList.remove(
-    "show"
+  message.classList.remove(
+    "visible"
   );
 }
 
-function updateOrbUI(){
+function updateOrbs(){
 
   spirits.forEach(
     (spirit,index) => {
 
-      if(spirit.collected){
-
-        orbUI[index]
-          .classList.add("on");
-
-      }
+      orbs[index]
+        .classList.toggle(
+          "active",
+          spirit.collected
+        );
 
     }
   );
+
 }
 
 
-/* ==============================
+/* =========================
    WORLD
-================================ */
+========================= */
 
-function worldToScreen(
+function screen(
   x,
   y
 ){
 
   const scale =
     Math.min(
-      width,
-      height
+      W,
+      H
     ) / 15;
 
   return {
 
     x:
-      width / 2 +
+      W / 2 +
       (x - cameraX) *
       scale,
 
     y:
-      height * 0.54 +
+      H * .54 +
       (y - cameraY) *
       scale *
-      0.78
+      .78
 
   };
 }
 
-function distance(
+function dist(
   ax,
   ay,
   bx,
@@ -942,44 +873,44 @@ function distance(
 }
 
 
-/* ==============================
+/* =========================
    PARTICLES
-================================ */
+========================= */
 
-function createParticle(
+function particlesAdd(
   x,
   y,
   color,
-  count = 10
+  amount
 ){
 
   for(
     let i = 0;
-    i < count;
+    i < amount;
     i++
   ){
 
     particles.push({
 
-      x,
-      y,
+      x:x,
+      y:y,
 
       vx:
-        (Math.random() - 0.5)
-        * 1.2,
+        (Math.random()-.5) *
+        1.2,
 
       vy:
-        (Math.random() - 0.6)
-        * 1.1,
+        (Math.random()-.7) *
+        1.1,
 
-      life: 1,
+      life:1,
 
       size:
+        .025 +
         Math.random() *
-        0.07 +
-        0.025,
+        .05,
 
-      color
+      color:color
 
     });
 
@@ -987,9 +918,7 @@ function createParticle(
 
 }
 
-function updateParticles(
-  delta
-){
+function particlesUpdate(){
 
   for(
     let i =
@@ -1001,17 +930,12 @@ function updateParticles(
     const p =
       particles[i];
 
-    p.x +=
-      p.vx * delta;
+    p.x += p.vx * .016;
+    p.y += p.vy * .016;
 
-    p.y +=
-      p.vy * delta;
+    p.vy += .001;
 
-    p.vy +=
-      0.06 * delta;
-
-    p.life -=
-      0.018 * delta;
+    p.life -= .018;
 
     if(p.life <= 0){
 
@@ -1026,964 +950,35 @@ function updateParticles(
 
 }
 
-
-/* ==============================
-   SKY
-================================ */
-
-function drawSky(){
-
-  const gradient =
-    ctx.createLinearGradient(
-      0,
-      0,
-      0,
-      height
-    );
-
-  gradient.addColorStop(
-    0,
-    "#07101f"
-  );
-
-  gradient.addColorStop(
-    0.38,
-    "#142943"
-  );
-
-  gradient.addColorStop(
-    0.7,
-    "#354b68"
-  );
-
-  gradient.addColorStop(
-    1,
-    "#08121e"
-  );
-
-  ctx.fillStyle =
-    gradient;
-
-  ctx.fillRect(
-    0,
-    0,
-    width,
-    height
-  );
-
-
-  /* Lune */
-
-  const moonX =
-    width * 0.76;
-
-  const moonY =
-    height * 0.19;
-
-  const radius =
-    Math.min(
-      width,
-      height
-    ) * 0.055;
-
-  ctx.shadowColor =
-    "rgba(255,230,181,.45)";
-
-  ctx.shadowBlur = 30;
-
-  ctx.fillStyle =
-    "#f5e2b2";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    moonX,
-    moonY,
-    radius,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.fill();
-
-  ctx.shadowBlur = 0;
-
-
-  /* Montagnes */
-
-  ctx.fillStyle =
-    "#111c2d";
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    0,
-    height * 0.58
-  );
-
-  for(
-    let x = 0;
-    x <= width;
-    x += 70
-  ){
-
-    const y =
-      height * 0.54 -
-      Math.sin(x * 0.005) * 30 -
-      Math.sin(x * 0.012) * 15;
-
-    ctx.lineTo(
-      x,
-      y
-    );
-
-  }
-
-  ctx.lineTo(
-    width,
-    height
-  );
-
-  ctx.lineTo(
-    0,
-    height
-  );
-
-  ctx.closePath();
-
-  ctx.fill();
-
-}
-
-
-/* ==============================
-   WATER
-================================ */
-
-function drawWater(){
-
-  ctx.fillStyle =
-    "#0a1b2a";
-
-  ctx.fillRect(
-    0,
-    height * 0.52,
-    width,
-    height * 0.48
-  );
-
-  for(
-    let i = 0;
-    i < 32;
-    i++
-  ){
-
-    const y =
-      height * 0.55 +
-      i * 18 +
-      Math.sin(
-        time * 0.0007 + i
-      ) * 3;
-
-    ctx.strokeStyle =
-      `rgba(
-        132,
-        177,
-        195,
-        ${0.045 + (i % 3) * 0.015}
-      )`;
-
-    ctx.lineWidth = 1;
-
-    for(
-      let x = -50;
-      x < width + 50;
-      x += 100
-    ){
-
-      const offset =
-        Math.sin(
-          i * 3.2 +
-          time * 0.0008
-        ) * 16;
-
-      ctx.beginPath();
-
-      ctx.moveTo(
-        x + offset,
-        y
-      );
-
-      ctx.quadraticCurveTo(
-        x + 25 + offset,
-        y - 4,
-        x + 50 + offset,
-        y
-      );
-
-      ctx.stroke();
-
-    }
-
-  }
-
-}
-
-
-/* ==============================
-   ISLAND
-================================ */
-
-function drawIsland(){
-
-  const p =
-    worldToScreen(
-      0,
-      -0.6
-    );
-
-  const scale =
-    Math.min(
-      width,
-      height
-    ) / 15;
-
-  const rx =
-    scale * 6;
-
-  const ry =
-    scale * 3.7;
-
-
-  /* Ombre */
-
-  ctx.fillStyle =
-    "rgba(0,0,0,.34)";
-
-  ctx.beginPath();
-
-  ctx.ellipse(
-    p.x,
-    p.y + ry * .2,
-    rx * 1.04,
-    ry * .94,
-    0,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.fill();
-
-
-  /* Plage */
-
-  ctx.fillStyle =
-    "#8e7759";
-
-  ctx.beginPath();
-
-  ctx.ellipse(
-    p.x,
-    p.y,
-    rx,
-    ry,
-    0,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.fill();
-
-
-  /* Herbe */
-
-  const grass =
-    ctx.createRadialGradient(
-      p.x - rx * .15,
-      p.y - ry * .2,
-      10,
-      p.x,
-      p.y,
-      rx
-    );
-
-  grass.addColorStop(
-    0,
-    "#315744"
-  );
-
-  grass.addColorStop(
-    .6,
-    "#1a3b31"
-  );
-
-  grass.addColorStop(
-    1,
-    "#10241f"
-  );
-
-  ctx.fillStyle =
-    grass;
-
-  ctx.beginPath();
-
-  ctx.ellipse(
-    p.x,
-    p.y - scale * .12,
-    rx * .88,
-    ry * .78,
-    0,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.fill();
-
-
-  /* Chemin */
-
-  ctx.strokeStyle =
-    "#7e6a50";
-
-  ctx.lineWidth =
-    scale * .62;
-
-  ctx.lineCap =
-    "round";
-
-  const start =
-    worldToScreen(
-      player.x,
-      player.y
-    );
-
-  const mid =
-    worldToScreen(
-      0,
-      -1.7
-    );
-
-  const end =
-    worldToScreen(
-      shrine.x,
-      shrine.y
-    );
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    start.x,
-    start.y
-  );
-
-  ctx.quadraticCurveTo(
-    mid.x,
-    mid.y,
-    end.x,
-    end.y
-  );
-
-  ctx.stroke();
-
-
-  ctx.lineWidth =
-    scale * .42;
-
-  ctx.strokeStyle =
-    "#5b4b3f";
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    start.x,
-    start.y
-  );
-
-  ctx.quadraticCurveTo(
-    mid.x,
-    mid.y,
-    end.x,
-    end.y
-  );
-
-  ctx.stroke();
-
-}
-
-
-/* ==============================
-   TREES
-================================ */
-
-function drawTree(
-  x,
-  y
-){
-
-  const p =
-    worldToScreen(
-      x,
-      y
-    );
-
-  const scale =
-    Math.min(
-      width,
-      height
-    ) / 15;
-
-  const sway =
-    Math.sin(
-      time * .001 +
-      x * 3
-    ) * 2;
-
-
-  ctx.fillStyle =
-    "#402c25";
-
-  ctx.fillRect(
-    p.x - scale * .11,
-    p.y - scale * .15,
-    scale * .22,
-    scale * .75
-  );
-
-
-  const layers = [
-
-    [-.55,.60],
-    [-.9,.47],
-    [-1.2,.33]
-
-  ];
-
-
-  layers.forEach(
-    (layer,index) => {
-
-      const gradient =
-        ctx.createRadialGradient(
-          p.x - 8,
-          p.y + layer[0] * scale,
-          2,
-          p.x,
-          p.y + layer[0] * scale,
-          layer[1] * scale
-        );
-
-      gradient.addColorStop(
-        0,
-        index === 0
-          ? "#39634e"
-          : "#2e5545"
-      );
-
-      gradient.addColorStop(
-        1,
-        "#10261f"
-      );
-
-      ctx.fillStyle =
-        gradient;
-
-      ctx.beginPath();
-
-      ctx.arc(
-        p.x +
-          sway *
-          (index + 1) *
-          .3,
-        p.y +
-          layer[0] *
-          scale,
-        layer[1] *
-          scale,
-        0,
-        Math.PI * 2
-      );
-
-      ctx.fill();
-
-    }
-  );
-
-}
-
-
-/* ==============================
-   LANTERNS
-================================ */
-
-function drawLantern(
-  x,
-  y
-){
-
-  const p =
-    worldToScreen(
-      x,
-      y
-    );
-
-  const scale =
-    Math.min(
-      width,
-      height
-    ) / 15;
-
-  const glow =
-    .52 +
-    Math.sin(
-      time * .004 +
-      x
-    ) * .12;
-
-
-  ctx.fillStyle =
-    "#463229";
-
-  ctx.fillRect(
-    p.x - 3,
-    p.y - scale * .25,
-    6,
-    scale * .55
-  );
-
-
-  ctx.shadowColor =
-    `rgba(
-      244,
-      199,
-      119,
-      ${glow}
-    )`;
-
-  ctx.shadowBlur = 22;
-
-  ctx.fillStyle =
-    "#f5c86d";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    p.x,
-    p.y - scale * .25,
-    scale * .09,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.fill();
-
-  ctx.shadowBlur = 0;
-
-}
-
-/* ==============================
-   ESPRITS
-================================ */
-
-function drawSpirit(
-  spirit
-){
-
-  if(spirit.collected){
-    return;
-  }
-
-  const p =
-    worldToScreen(
-      spirit.x,
-      spirit.y
-    );
-
-  const scale =
-    Math.min(
-      width,
-      height
-    ) / 15;
-
-  const floating =
-    Math.sin(
-      time * .003 +
-      spirit.phase
-    ) *
-    scale *
-    .12;
-
-  const radius =
-    scale *
-    (
-      .13 +
-      Math.sin(
-        time * .005 +
-        spirit.phase
-      ) *
-      .015
-    );
-
-
-  ctx.shadowColor =
-    "rgba(173,230,255,.9)";
-
-  ctx.shadowBlur = 30;
-
-  ctx.fillStyle =
-    "#c4efff";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    p.x,
-    p.y + floating,
-    radius,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.fill();
-
-  ctx.shadowBlur = 0;
-
-
-  ctx.fillStyle =
-    "rgba(255,255,255,.85)";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    p.x - radius * .35,
-    p.y + floating - radius * .3,
-    radius * .25,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.fill();
-
-
-  ctx.strokeStyle =
-    "rgba(177,224,255,.22)";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    p.x,
-    p.y + floating,
-    radius * 2.2,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.stroke();
-
-}
-
-
-/* ==============================
-   PERSONNAGE
-================================ */
-
-function drawPlayer(){
-
-  const p =
-    worldToScreen(
-      player.x,
-      player.y
-    );
-
-  const scale =
-    Math.min(
-      width,
-      height
-    ) / 15;
-
-  const moving =
-    keys.size > 0 &&
-    started;
-
-  const bob =
-    moving
-      ? Math.sin(
-          time * .018
-        ) *
-        scale *
-        .035
-      : 0;
-
-
-  /* Ombre */
-
-  ctx.fillStyle =
-    "rgba(0,0,0,.32)";
-
-  ctx.beginPath();
-
-  ctx.ellipse(
-    p.x,
-    p.y + scale * .25,
-    scale * .26,
-    scale * .11,
-    0,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.fill();
-
-
-  /* Corps */
-
-  ctx.fillStyle =
-    "#1a2232";
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    p.x - scale * .23,
-    p.y - scale * .04 + bob
-  );
-
-  ctx.lineTo(
-    p.x + scale * .23,
-    p.y - scale * .04 + bob
-  );
-
-  ctx.lineTo(
-    p.x + scale * .33,
-    p.y + scale * .43 + bob
-  );
-
-  ctx.lineTo(
-    p.x - scale * .33,
-    p.y + scale * .43 + bob
-  );
-
-  ctx.closePath();
-
-  ctx.fill();
-
-
-  /* Veste / cape */
-
-  ctx.fillStyle =
-    "#a94350";
-
-  ctx.beginPath();
-
-  ctx.moveTo(
-    p.x - scale * .19,
-    p.y - scale * .04 + bob
-  );
-
-  ctx.lineTo(
-    p.x + scale * .19,
-    p.y - scale * .04 + bob
-  );
-
-  ctx.lineTo(
-    p.x + scale * .28,
-    p.y + scale * .39 + bob
-  );
-
-  ctx.lineTo(
-    p.x - scale * .28,
-    p.y + scale * .39 + bob
-  );
-
-  ctx.closePath();
-
-  ctx.fill();
-
-
-  /* Cou */
-
-  ctx.fillStyle =
-    "#9a664c";
-
-  ctx.fillRect(
-    p.x - scale * .06,
-    p.y - scale * .27 + bob,
-    scale * .12,
-    scale * .12
-  );
-
-
-  /* Visage */
-
-  ctx.fillStyle =
-    "#a96f53";
-
-  ctx.beginPath();
-
-  ctx.ellipse(
-    p.x,
-    p.y - scale * .43 + bob,
-    scale * .17,
-    scale * .19,
-    0,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.fill();
-
-
-  /* Chevelure curly */
-
-  ctx.fillStyle =
-    "#111219";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    p.x,
-    p.y - scale * .52 + bob,
-    scale * .21,
-    Math.PI,
-    Math.PI * 2
-  );
-
-  ctx.fill();
-
-
-  const curls = [
-
-    [-.16,-.53,.095],
-    [-.08,-.63,.09],
-    [0,-.68,.10],
-    [.11,-.62,.10],
-    [.18,-.51,.085],
-    [-.20,-.42,.075],
-    [.20,-.42,.075]
-
-  ];
-
-
-  curls.forEach(
-    curl => {
-
-      ctx.beginPath();
-
-      ctx.arc(
-        p.x +
-          curl[0] * scale,
-        p.y +
-          curl[1] * scale +
-          bob,
-        curl[2] * scale,
-        0,
-        Math.PI * 2
-      );
-
-      ctx.fill();
-
-    }
-  );
-
-
-  /* Reflet cheveux */
-
-  ctx.fillStyle =
-    "#2a2630";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    p.x - scale * .08,
-    p.y - scale * .64 + bob,
-    scale * .035,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.fill();
-
-
-  /* Jambes */
-
-  ctx.fillStyle =
-    "#172033";
-
-  ctx.fillRect(
-    p.x - scale * .13,
-    p.y + scale * .38 + bob,
-    scale * .08,
-    scale * .22
-  );
-
-  ctx.fillRect(
-    p.x + scale * .05,
-    p.y + scale * .38 + bob,
-    scale * .08,
-    scale * .22
-  );
-
-
-  /* Petit talisman */
-
-  ctx.shadowColor =
-    "#f4cf78";
-
-  ctx.shadowBlur = 8;
-
-  ctx.fillStyle =
-    "#f4cf78";
-
-  ctx.beginPath();
-
-  ctx.arc(
-    p.x + scale * .2,
-    p.y + scale * .05,
-    scale * .045,
-    0,
-    Math.PI * 2
-  );
-
-  ctx.fill();
-
-  ctx.shadowBlur = 0;
-
-}
-
-
-/* ==============================
-   PARTICULES
-================================ */
-
-function drawParticles(){
+function particlesDraw(){
 
   particles.forEach(
-    particle => {
+    p => {
 
-      const screen =
-        worldToScreen(
-          particle.x,
-          particle.y
+      const s =
+        screen(
+          p.x,
+          p.y
         );
 
       ctx.globalAlpha =
         Math.max(
           0,
-          particle.life
+          p.life
         );
 
       ctx.fillStyle =
-        particle.color;
+        p.color;
 
       ctx.beginPath();
 
       ctx.arc(
-        screen.x,
-        screen.y,
+        s.x,
+        s.y,
         Math.max(
           1,
-          particle.size *
-          Math.min(
-            width,
-            height
-          )
+          p.size *
+          Math.min(W,H)
         ),
         0,
         Math.PI * 2
@@ -1999,39 +994,1290 @@ function drawParticles(){
 }
 
 
-/* ==============================
-   GAMEPLAY
-================================ */
+/* =========================
+   SKY
+========================= */
 
-function keepPlayerOnIsland(){
+function drawSky(){
 
-  const distanceFromCenter =
-    Math.hypot(
-      player.x,
-      player.y + .6
+  const gradient =
+    ctx.createLinearGradient(
+      0,
+      0,
+      0,
+      H
     );
 
-  if(
-    distanceFromCenter > 5.2
+  gradient.addColorStop(
+    0,
+    "#071020"
+  );
+
+  gradient.addColorStop(
+    .42,
+    "#172c45"
+  );
+
+  gradient.addColorStop(
+    .7,
+    "#304960"
+  );
+
+  gradient.addColorStop(
+    1,
+    "#07121d"
+  );
+
+  ctx.fillStyle =
+    gradient;
+
+  ctx.fillRect(
+    0,
+    0,
+    W,
+    H
+  );
+
+
+  /* lune */
+
+  const mx =
+    W * .77;
+
+  const my =
+    H * .18;
+
+  const mr =
+    Math.min(W,H) * .055;
+
+  ctx.shadowColor =
+    "rgba(255,225,170,.55)";
+
+  ctx.shadowBlur = 32;
+
+  ctx.fillStyle =
+    "#f5e1b1";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    mx,
+    my,
+    mr,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+
+
+  /* étoiles */
+
+  for(
+    let i = 0;
+    i < 45;
+    i++
   ){
 
-    const angle =
-      Math.atan2(
-        player.y + .6,
-        player.x
-      );
+    const x =
+      (i * 83) % W;
 
-    player.x =
-      Math.cos(angle) * 5.15;
+    const y =
+      25 +
+      ((i * 47) %
+      Math.floor(H*.38));
 
-    player.y =
-      Math.sin(angle) * 5.15 - .6;
+    const a =
+      .25 +
+      Math.sin(
+        time * .002 + i
+      ) * .15;
+
+    ctx.fillStyle =
+      `rgba(255,255,255,${a})`;
+
+    ctx.fillRect(
+      x,
+      y,
+      1.4,
+      1.4
+    );
 
   }
 
 }
 
-function collectNearbySpirits(){
+
+/* =========================
+   WATER
+========================= */
+
+function drawWater(){
+
+  ctx.fillStyle =
+    "#091b2a";
+
+  ctx.fillRect(
+    0,
+    H*.52,
+    W,
+    H*.48
+  );
+
+  for(
+    let i = 0;
+    i < 30;
+    i++
+  ){
+
+    const y =
+      H*.55 +
+      i*18 +
+      Math.sin(
+        time*.001+i
+      )*3;
+
+    ctx.strokeStyle =
+      `rgba(130,180,200,${
+        .04 + (i%3)*.012
+      })`;
+
+    ctx.lineWidth = 1;
+
+    for(
+      let x = -50;
+      x < W+50;
+      x += 105
+    ){
+
+      const offset =
+        Math.sin(
+          i*2.7+
+          time*.001
+        )*14;
+
+      ctx.beginPath();
+
+      ctx.moveTo(
+        x+offset,
+        y
+      );
+
+      ctx.quadraticCurveTo(
+        x+25+offset,
+        y-3,
+        x+50+offset,
+        y
+      );
+
+      ctx.stroke();
+
+    }
+
+  }
+
+}
+
+
+/* =========================
+   ISLAND
+========================= */
+
+function drawIsland(){
+
+  const p =
+    screen(
+      0,
+      -.6
+    );
+
+  const scale =
+    Math.min(W,H)/15;
+
+  const rx =
+    scale*6;
+
+  const ry =
+    scale*3.7;
+
+
+  /* ombre */
+
+  ctx.fillStyle =
+    "rgba(0,0,0,.38)";
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x,
+    p.y+ry*.18,
+    rx*1.03,
+    ry*.94,
+    0,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  /* sable */
+
+  ctx.fillStyle =
+    "#907a5c";
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x,
+    p.y,
+    rx,
+    ry,
+    0,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  /* herbe */
+
+  const grass =
+    ctx.createRadialGradient(
+      p.x-rx*.2,
+      p.y-ry*.2,
+      10,
+      p.x,
+      p.y,
+      rx
+    );
+
+  grass.addColorStop(
+    0,
+    "#39634d"
+  );
+
+  grass.addColorStop(
+    .58,
+    "#1e4335"
+  );
+
+  grass.addColorStop(
+    1,
+    "#10251f"
+  );
+
+  ctx.fillStyle =
+    grass;
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x,
+    p.y-scale*.12,
+    rx*.88,
+    ry*.78,
+    0,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  /* chemin */
+
+  const a =
+    screen(
+      player.x,
+      player.y
+    );
+
+  const b =
+    screen(
+      0,
+      -1.7
+    );
+
+  const c =
+    screen(
+      shrine.x,
+      shrine.y
+    );
+
+  ctx.lineCap =
+    "round";
+
+  ctx.lineWidth =
+    scale*.62;
+
+  ctx.strokeStyle =
+    "#756249";
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    a.x,
+    a.y
+  );
+
+  ctx.quadraticCurveTo(
+    b.x,
+    b.y,
+    c.x,
+    c.y
+  );
+
+  ctx.stroke();
+
+  ctx.lineWidth =
+    scale*.40;
+
+  ctx.strokeStyle =
+    "#55473b";
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    a.x,
+    a.y
+  );
+
+  ctx.quadraticCurveTo(
+    b.x,
+    b.y,
+    c.x,
+    c.y
+  );
+
+  ctx.stroke();
+
+}
+
+
+/* =========================
+   TREES
+========================= */
+
+function drawTree(
+  x,
+  y
+){
+
+  const p =
+    screen(
+      x,
+      y
+    );
+
+  const scale =
+    Math.min(W,H)/15;
+
+  const sway =
+    Math.sin(
+      time*.001+x*3
+    )*2;
+
+
+  ctx.fillStyle =
+    "#402b25";
+
+  ctx.fillRect(
+    p.x-scale*.1,
+    p.y-scale*.15,
+    scale*.2,
+    scale*.72
+  );
+
+
+  const crowns = [
+    [-.55,.60],
+    [-.88,.48],
+    [-1.18,.34]
+  ];
+
+  crowns.forEach(
+    (item,index) => {
+
+      const g =
+        ctx.createRadialGradient(
+          p.x-8,
+          p.y+item[0]*scale,
+          2,
+          p.x,
+          p.y+item[0]*scale,
+          item[1]*scale
+        );
+
+      g.addColorStop(
+        0,
+        index===0
+          ? "#427057"
+          : "#315b49"
+      );
+
+      g.addColorStop(
+        1,
+        "#10261f"
+      );
+
+      ctx.fillStyle = g;
+
+      ctx.beginPath();
+
+      ctx.arc(
+        p.x+
+          sway*(index+1)*.3,
+        p.y+
+          item[0]*scale,
+        item[1]*scale,
+        0,
+        Math.PI*2
+      );
+
+      ctx.fill();
+
+    }
+  );
+
+}
+
+  /* =========================
+   LANTERNE
+========================= */
+
+function drawLantern(
+  x,
+  y
+){
+
+  const p =
+    screen(
+      x,
+      y
+    );
+
+  const scale =
+    Math.min(W,H)/15;
+
+  const glow =
+    .5 +
+    Math.sin(
+      time*.004+x
+    )*.1;
+
+
+  ctx.fillStyle =
+    "#49342a";
+
+  ctx.fillRect(
+    p.x-3,
+    p.y-scale*.25,
+    6,
+    scale*.55
+  );
+
+
+  ctx.shadowColor =
+    `rgba(
+      245,
+      201,
+      110,
+      ${glow}
+    )`;
+
+  ctx.shadowBlur = 22;
+
+  ctx.fillStyle =
+    "#f6ca72";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x,
+    p.y-scale*.25,
+    scale*.085,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+
+}
+
+
+/* =========================
+   SANCTUAIRE
+========================= */
+
+function drawShrine(){
+
+  const p =
+    screen(
+      shrine.x,
+      shrine.y
+    );
+
+  const scale =
+    Math.min(W,H)/15;
+
+  const unlocked =
+    spirits.every(
+      spirit =>
+        spirit.collected
+    );
+
+
+  /* aura */
+
+  ctx.shadowColor =
+    "rgba(244,201,119,.5)";
+
+  ctx.shadowBlur = 45;
+
+  ctx.fillStyle =
+    "rgba(244,201,119,.06)";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x,
+    p.y,
+    scale*1.45,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+
+
+  /* marches */
+
+  ctx.fillStyle =
+    "#5e5147";
+
+  ctx.fillRect(
+    p.x-scale*.75,
+    p.y+scale*.3,
+    scale*1.5,
+    scale*.22
+  );
+
+
+  /* bâtiment */
+
+  ctx.fillStyle =
+    "#67323a";
+
+  ctx.fillRect(
+    p.x-scale*.9,
+    p.y-scale*.65,
+    scale*1.8,
+    scale*.95
+  );
+
+
+  /* toit */
+
+  ctx.fillStyle =
+    "#15161c";
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    p.x-scale*1.18,
+    p.y-scale*.65
+  );
+
+  ctx.lineTo(
+    p.x,
+    p.y-scale*1.25
+  );
+
+  ctx.lineTo(
+    p.x+scale*1.18,
+    p.y-scale*.65
+  );
+
+  ctx.closePath();
+
+  ctx.fill();
+
+
+  /* torii */
+
+  ctx.fillStyle =
+    "#853b43";
+
+  ctx.fillRect(
+    p.x-scale*.95,
+    p.y-scale*1.08,
+    scale*.12,
+    scale*.7
+  );
+
+  ctx.fillRect(
+    p.x+scale*.83,
+    p.y-scale*1.08,
+    scale*.12,
+    scale*.7
+  );
+
+  ctx.fillRect(
+    p.x-scale*1.05,
+    p.y-scale*1.12,
+    scale*2.1,
+    scale*.12
+  );
+
+
+  /* porte */
+
+  ctx.fillStyle =
+    unlocked
+      ? "#efc875"
+      : "#291b22";
+
+  ctx.fillRect(
+    p.x-scale*.24,
+    p.y-scale*.55,
+    scale*.48,
+    scale*.85
+  );
+
+
+  drawLantern(
+    shrine.x-1.1,
+    shrine.y+.2
+  );
+
+  drawLantern(
+    shrine.x+1.1,
+    shrine.y+.2
+  );
+
+}
+
+
+/* =========================
+   ESPRITS
+========================= */
+
+function drawSpirit(
+  spirit
+){
+
+  if(spirit.collected){
+    return;
+  }
+
+  const p =
+    screen(
+      spirit.x,
+      spirit.y
+    );
+
+  const scale =
+    Math.min(W,H)/15;
+
+  const bob =
+    Math.sin(
+      time*.003+
+      spirit.phase
+    )*
+    scale*.12;
+
+  const radius =
+    scale*.14;
+
+
+  ctx.shadowColor =
+    "rgba(176,230,255,.9)";
+
+  ctx.shadowBlur = 28;
+
+  ctx.fillStyle =
+    "#c8efff";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x,
+    p.y+bob,
+    radius,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+
+
+  ctx.fillStyle =
+    "rgba(255,255,255,.9)";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x-radius*.35,
+    p.y+bob-radius*.3,
+    radius*.24,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  ctx.strokeStyle =
+    "rgba(185,230,255,.25)";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x,
+    p.y+bob,
+    radius*2.2,
+    0,
+    Math.PI*2
+  );
+
+  ctx.stroke();
+
+}
+
+
+/* =========================
+   PERSONNAGE MIGNON
+========================= */
+
+function drawPlayer(){
+
+  const p =
+    screen(
+      player.x,
+      player.y
+    );
+
+  const scale =
+    Math.min(W,H)/15;
+
+  const moving =
+    keys.size > 0 &&
+    started;
+
+  const bob =
+    moving
+      ? Math.sin(
+          time*.018
+        )*
+        scale*.035
+      : 0;
+
+
+  /* ombre */
+
+  ctx.fillStyle =
+    "rgba(0,0,0,.3)";
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x,
+    p.y+scale*.28,
+    scale*.27,
+    scale*.11,
+    0,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  /* jambes */
+
+  ctx.fillStyle =
+    "#20283a";
+
+  ctx.fillRect(
+    p.x-scale*.13,
+    p.y+scale*.30+bob,
+    scale*.09,
+    scale*.28
+  );
+
+  ctx.fillRect(
+    p.x+scale*.04,
+    p.y+scale*.30+bob,
+    scale*.09,
+    scale*.28
+  );
+
+
+  /* chaussures */
+
+  ctx.fillStyle =
+    "#171923";
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x-scale*.09,
+    p.y+scale*.58+bob,
+    scale*.11,
+    scale*.055,
+    0,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x+scale*.09,
+    p.y+scale*.58+bob,
+    scale*.11,
+    scale*.055,
+    0,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  /* corps */
+
+  ctx.fillStyle =
+    "#b84e61";
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    p.x-scale*.2,
+    p.y-scale*.02+bob
+  );
+
+  ctx.quadraticCurveTo(
+    p.x,
+    p.y-scale*.12+bob,
+    p.x+scale*.2,
+    p.y-scale*.02+bob
+  );
+
+  ctx.lineTo(
+    p.x+scale*.28,
+    p.y+scale*.36+bob
+  );
+
+  ctx.quadraticCurveTo(
+    p.x,
+    p.y+scale*.44+bob,
+    p.x-scale*.28,
+    p.y+scale*.36+bob
+  );
+
+  ctx.closePath();
+
+  ctx.fill();
+
+
+  /* manches */
+
+  ctx.fillStyle =
+    "#a94155";
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x-scale*.25,
+    p.y+scale*.05+bob,
+    scale*.075,
+    scale*.19,
+    -.25,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x+scale*.25,
+    p.y+scale*.05+bob,
+    scale*.075,
+    scale*.19,
+    .25,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  /* cou */
+
+  ctx.fillStyle =
+    "#b77b5f";
+
+  ctx.fillRect(
+    p.x-scale*.065,
+    p.y-scale*.28+bob,
+    scale*.13,
+    scale*.13
+  );
+
+
+  /* visage */
+
+  ctx.fillStyle =
+    "#b98064";
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x,
+    p.y-scale*.43+bob,
+    scale*.19,
+    scale*.21,
+    0,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  /* oreilles */
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x-scale*.18,
+    p.y-scale*.43+bob,
+    scale*.055,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x+scale*.18,
+    p.y-scale*.43+bob,
+    scale*.055,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  /* cheveux bouclés */
+
+  ctx.fillStyle =
+    "#111116";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x,
+    p.y-scale*.55+bob,
+    scale*.235,
+    Math.PI,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  const curls = [
+
+    [-.19,-.53,.10],
+    [-.12,-.64,.095],
+    [-.04,-.69,.10],
+    [.05,-.68,.10],
+    [.14,-.62,.10],
+    [.20,-.53,.095],
+
+    [-.23,-.43,.085],
+    [.23,-.43,.085]
+
+  ];
+
+
+  curls.forEach(
+    c => {
+
+      ctx.beginPath();
+
+      ctx.arc(
+        p.x+c[0]*scale,
+        p.y+c[1]*scale+bob,
+        c[2]*scale,
+        0,
+        Math.PI*2
+      );
+
+      ctx.fill();
+
+    }
+  );
+
+
+  /* petites mèches */
+
+  ctx.strokeStyle =
+    "#211b22";
+
+  ctx.lineWidth =
+    scale*.045;
+
+  ctx.lineCap =
+    "round";
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    p.x-scale*.17,
+    p.y-scale*.57+bob
+  );
+
+  ctx.quadraticCurveTo(
+    p.x-scale*.25,
+    p.y-scale*.36+bob,
+    p.x-scale*.18,
+    p.y-scale*.25+bob
+  );
+
+  ctx.stroke();
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    p.x+scale*.17,
+    p.y-scale*.57+bob
+  );
+
+  ctx.quadraticCurveTo(
+    p.x+scale*.25,
+    p.y-scale*.36+bob,
+    p.x+scale*.18,
+    p.y-scale*.25+bob
+  );
+
+  ctx.stroke();
+
+
+  /* yeux */
+
+  ctx.fillStyle =
+    "#17151a";
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x-scale*.065,
+    p.y-scale*.42+bob,
+    scale*.025,
+    scale*.045,
+    0,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x+scale*.065,
+    p.y-scale*.42+bob,
+    scale*.025,
+    scale*.045,
+    0,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  /* reflets des yeux */
+
+  ctx.fillStyle =
+    "#ffffff";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x-scale*.073,
+    p.y-scale*.435+bob,
+    scale*.008,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x+scale*.057,
+    p.y-scale*.435+bob,
+    scale*.008,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  /* nez */
+
+  ctx.fillStyle =
+    "rgba(110,66,55,.35)";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x,
+    p.y-scale*.36+bob,
+    scale*.012,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  /* petit sourire */
+
+  ctx.strokeStyle =
+    "#6e403c";
+
+  ctx.lineWidth =
+    scale*.018;
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x,
+    p.y-scale*.32+bob,
+    scale*.055,
+    .15,
+    Math.PI-.15
+  );
+
+  ctx.stroke();
+
+
+  /* joues */
+
+  ctx.fillStyle =
+    "rgba(231,120,125,.23)";
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x-scale*.115,
+    p.y-scale*.34+bob,
+    scale*.05,
+    scale*.025,
+    0,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x+scale*.115,
+    p.y-scale*.34+bob,
+    scale*.05,
+    scale*.025,
+    0,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+
+  /* petit pendentif */
+
+  ctx.shadowColor =
+    "#f5ce77";
+
+  ctx.shadowBlur = 8;
+
+  ctx.fillStyle =
+    "#f5ce77";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x+scale*.19,
+    p.y+scale*.05+bob,
+    scale*.04,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+
+}
+
+
+/* =========================
+   GAMEPLAY
+========================= */
+
+function keepInside(){
+
+  const d =
+    Math.hypot(
+      player.x,
+      player.y+.6
+    );
+
+  if(d > 5.15){
+
+    const angle =
+      Math.atan2(
+        player.y+.6,
+        player.x
+      );
+
+    player.x =
+      Math.cos(angle)*5.1;
+
+    player.y =
+      Math.sin(angle)*5.1-.6;
+
+  }
+
+}
+
+function collectSpirits(){
 
   spirits.forEach(
     spirit => {
@@ -2040,45 +2286,44 @@ function collectNearbySpirits(){
         return;
       }
 
-      const d =
-        distance(
+      if(
+        dist(
           player.x,
           player.y,
           spirit.x,
           spirit.y
-        );
+        ) < .55
+      ){
 
-      if(d < .55){
+        spirit.collected =
+          true;
 
-        spirit.collected = true;
-
-        createParticle(
+        particlesAdd(
           spirit.x,
           spirit.y,
-          "#bfefff",
-          20
+          "#c8efff",
+          22
         );
 
-        playPickup();
+        pickupSound();
 
-        updateOrbUI();
+        updateOrbs();
 
-        const collected =
+        const count =
           spirits.filter(
-            item =>
-              item.collected
+            s => s.collected
           ).length;
 
-        if(collected < 3){
+        if(count < 3){
 
           showMessage(
             "Une lumière retrouvée",
-            `${3 - collected} lumière${
-              3 - collected > 1
+            `${3-count} lumière${
+              3-count>1
                 ? "s"
                 : ""
             } restante${
-              3 - collected > 1
+              3-count>1
                 ? "s"
                 : ""
             }.`
@@ -2086,21 +2331,21 @@ function collectNearbySpirits(){
 
           setTimeout(
             hideMessage,
-            1600
+            1700
           );
 
         }else{
 
           showMessage(
             "Les trois esprits sont réunis",
-            "Le sanctuaire reconnaît enfin ta présence."
+            "Le sanctuaire reconnaît ta présence."
           );
 
-          playUnlock();
+          unlockSound();
 
           setTimeout(
             hideMessage,
-            3000
+            2800
           );
 
         }
@@ -2117,34 +2362,32 @@ function checkEnding(){
   if(
     ending ||
     !spirits.every(
-      spirit =>
-        spirit.collected
+      s => s.collected
     )
   ){
     return;
   }
 
-  const d =
-    distance(
+  if(
+    dist(
       player.x,
       player.y,
       shrine.x,
       shrine.y
-    );
-
-  if(d < 1.1){
+    ) < 1.1
+  ){
 
     ending = true;
     finished = true;
 
-    createParticle(
+    particlesAdd(
       shrine.x,
       shrine.y,
-      "#f4cf78",
-      70
+      "#f4ce77",
+      75
     );
 
-    playUnlock();
+    unlockSound();
 
     showMessage(
       "Bienvenue",
@@ -2160,7 +2403,7 @@ function checkEnding(){
         );
 
       },
-      4200
+      4000
     );
 
   }
@@ -2168,11 +2411,11 @@ function checkEnding(){
 }
 
 
-/* ==============================
+/* =========================
    UPDATE
-================================ */
+========================= */
 
-let lastTime =
+let last =
   performance.now();
 
 function update(now){
@@ -2180,10 +2423,10 @@ function update(now){
   const delta =
     Math.min(
       32,
-      now - lastTime
+      now-last
     );
 
-  lastTime = now;
+  last = now;
 
   time += delta;
 
@@ -2202,32 +2445,29 @@ function update(now){
       keys.has("w") ||
       keys.has("z")
     ){
-      dy -= 1;
+      dy--;
     }
-
 
     if(
       keys.has("ArrowDown") ||
       keys.has("s")
     ){
-      dy += 1;
+      dy++;
     }
-
 
     if(
       keys.has("ArrowLeft") ||
       keys.has("a") ||
       keys.has("q")
     ){
-      dx -= 1;
+      dx--;
     }
-
 
     if(
       keys.has("ArrowRight") ||
       keys.has("d")
     ){
-      dx += 1;
+      dx++;
     }
 
 
@@ -2242,31 +2482,26 @@ function update(now){
       dx /= length;
       dy /= length;
 
-
       const movement =
-        player.speed *
-        (delta / 1000);
-
+        player.speed*
+        delta/
+        1000;
 
       player.x +=
-        dx * movement;
+        dx*movement;
 
       player.y +=
-        dy * movement;
-
-      player.bob +=
-        delta;
+        dy*movement;
 
 
       if(
-        now -
-        player.lastStep >
+        now-player.stepTimer >
         280
       ){
 
-        playFootstep();
+        stepSound();
 
-        player.lastStep =
+        player.stepTimer =
           now;
 
       }
@@ -2274,9 +2509,9 @@ function update(now){
     }
 
 
-    keepPlayerOnIsland();
+    keepInside();
 
-    collectNearbySpirits();
+    collectSpirits();
 
     checkEnding();
 
@@ -2285,49 +2520,45 @@ function update(now){
 
   cameraX +=
     (
-      player.x -
-      cameraX
-    ) * .06;
+      player.x-cameraX
+    )*.055;
 
   cameraY +=
     (
-      player.y -
-      cameraY
-    ) * .06;
+      player.y-cameraY
+    )*.055;
 
 
-  updateParticles(
-    delta
-  );
+  particlesUpdate();
 
 
   if(
     started &&
-    Math.random() < .032
+    Math.random()<.035
   ){
 
     particles.push({
 
       x:
-        player.x +
-        (Math.random() - .5) * 9,
+        player.x+
+        (Math.random()-.5)*9,
 
       y:
-        player.y +
-        (Math.random() - .5) * 9,
+        player.y+
+        (Math.random()-.5)*8,
 
       vx:0,
 
-      vy:-.015,
+      vy:-.01,
 
       life:1,
 
       size:
-        .018 +
-        Math.random() * .02,
+        .018+
+        Math.random()*.018,
 
       color:
-        "rgba(184,220,226,.45)"
+        "rgba(190,225,230,.4)"
 
     });
 
@@ -2339,12 +2570,13 @@ function update(now){
   requestAnimationFrame(
     update
   );
+
 }
 
 
-/* ==============================
+/* =========================
    RENDER
-================================ */
+========================= */
 
 function draw(){
 
@@ -2359,13 +2591,13 @@ function draw(){
     .slice()
     .sort(
       (a,b) =>
-        a[1] - b[1]
+        a[1]-b[1]
     )
     .forEach(
-      tree =>
+      t =>
         drawTree(
-          tree[0],
-          tree[1]
+          t[0],
+          t[1]
         )
     );
 
@@ -2379,17 +2611,17 @@ function draw(){
 
   drawPlayer();
 
-  drawParticles();
+  particlesDraw();
 
 
-  /* Brume */
+  /* brume */
 
   const fog =
     ctx.createLinearGradient(
       0,
-      height * .38,
+      H*.38,
       0,
-      height
+      H
     );
 
   fog.addColorStop(
@@ -2399,7 +2631,7 @@ function draw(){
 
   fog.addColorStop(
     1,
-    "rgba(120,160,175,.055)"
+    "rgba(120,160,175,.06)"
   );
 
   ctx.fillStyle =
@@ -2408,51 +2640,49 @@ function draw(){
   ctx.fillRect(
     0,
     0,
-    width,
-    height
+    W,
+    H
   );
 
 
-  /* Assombrissement périphérique */
+  /* vignette supplémentaire */
 
-  const darkness =
+  const dark =
     ctx.createRadialGradient(
-      width / 2,
-      height / 2,
-      Math.min(
-        width,
-        height
-      ) * .15,
-      width / 2,
-      height / 2,
-      Math.max(
-        width,
-        height
-      ) * .75
+      W/2,
+      H/2,
+      Math.min(W,H)*.18,
+      W/2,
+      H/2,
+      Math.max(W,H)*.72
     );
 
-  darkness.addColorStop(
+  dark.addColorStop(
     0,
     "rgba(0,0,0,0)"
   );
 
-  darkness.addColorStop(
+  dark.addColorStop(
     1,
-    "rgba(0,0,0,.35)"
+    "rgba(0,0,0,.34)"
   );
 
   ctx.fillStyle =
-    darkness;
+    dark;
 
   ctx.fillRect(
     0,
     0,
-    width,
-    height
+    W,
+    H
   );
 
 }
 
+
+/* =========================
+   START GAME LOOP
+========================= */
 
 draw();
 
@@ -2461,5 +2691,8 @@ requestAnimationFrame(
 );
 
 </script>
+
+</div>
+
 </body>
 </html>
