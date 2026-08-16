@@ -1,0 +1,2465 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>KAGE — Le sanctuaire oublié</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#050811;
+  color:#fff;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body{
+  touch-action:none;
+}
+
+#game{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+}
+
+canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+.vignette{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:5;
+  background:
+    radial-gradient(
+      circle at 50% 46%,
+      transparent 32%,
+      rgba(3,6,15,.13) 58%,
+      rgba(0,0,0,.72) 100%
+    );
+}
+
+.topbar{
+  position:absolute;
+  top:16px;
+  left:16px;
+  right:16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  z-index:10;
+  pointer-events:none;
+}
+
+.logo,
+.progress{
+  border:1px solid rgba(255,255,255,.11);
+  background:rgba(7,12,24,.52);
+  backdrop-filter:blur(12px);
+  box-shadow:0 12px 35px rgba(0,0,0,.22);
+  border-radius:15px;
+}
+
+.logo{
+  padding:10px 14px;
+}
+
+.logo strong{
+  display:block;
+  letter-spacing:.3em;
+  color:#f6d99d;
+  font-size:14px;
+}
+
+.logo span{
+  display:block;
+  margin-top:3px;
+  color:rgba(255,255,255,.5);
+  font-size:9px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+
+.progress{
+  display:flex;
+  gap:7px;
+  padding:10px;
+}
+
+.orb{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:rgba(255,255,255,.16);
+  transition:.3s;
+}
+
+.orb.on{
+  background:#f4c977;
+  box-shadow:
+    0 0 8px #f4c977,
+    0 0 22px rgba(244,201,119,.75);
+}
+
+.centerMessage{
+  position:absolute;
+  left:50%;
+  top:23%;
+  transform:translate(-50%,-50%);
+  z-index:8;
+  text-align:center;
+  pointer-events:none;
+  width:min(90vw,650px);
+  opacity:0;
+  transition:opacity .35s;
+}
+
+.centerMessage.show{
+  opacity:1;
+}
+
+.centerMessage h1{
+  margin:0;
+  font-size:clamp(28px,6vw,60px);
+  letter-spacing:.08em;
+  font-weight:800;
+  text-shadow:0 5px 30px rgba(0,0,0,.6);
+}
+
+.centerMessage p{
+  margin:10px 0 0;
+  color:rgba(255,255,255,.68);
+  font-size:11px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+
+.startScreen{
+  position:absolute;
+  inset:0;
+  z-index:20;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      rgba(49,75,110,.34),
+      transparent 40%
+    ),
+    linear-gradient(#050810,#09111c);
+  transition:
+    opacity .7s,
+    visibility .7s;
+}
+
+.startScreen.hide{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+
+.startCard{
+  width:min(92vw,520px);
+  text-align:center;
+  padding:34px;
+}
+
+.kana{
+  color:#d5bd95;
+  font-size:11px;
+  letter-spacing:.5em;
+  margin-left:.5em;
+}
+
+.startCard h1{
+  margin:14px 0 6px;
+  font-size:clamp(42px,12vw,86px);
+  letter-spacing:.12em;
+}
+
+.subtitle{
+  margin:0 auto 28px;
+  color:rgba(255,255,255,.55);
+  font-size:12px;
+  letter-spacing:.26em;
+  text-transform:uppercase;
+}
+
+.startCard p{
+  color:rgba(255,255,255,.68);
+  line-height:1.7;
+  font-size:14px;
+  margin-bottom:30px;
+}
+
+.startButton{
+  border:1px solid rgba(244,201,119,.45);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(244,201,119,.14),
+      rgba(244,201,119,.05)
+    );
+  color:#f8dda6;
+  border-radius:999px;
+  padding:14px 26px;
+  font-size:13px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:
+    0 0 25px rgba(244,201,119,.08),
+    inset 0 0 25px rgba(244,201,119,.03);
+}
+
+.instructions{
+  margin-top:18px !important;
+  color:rgba(255,255,255,.34) !important;
+  font-size:11px !important;
+}
+
+.bottomHint{
+  position:absolute;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%);
+  z-index:8;
+  color:rgba(255,255,255,.45);
+  font-size:10px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  text-align:center;
+  pointer-events:none;
+}
+
+.controls{
+  position:absolute;
+  left:18px;
+  bottom:18px;
+  z-index:12;
+  display:none;
+  grid-template-columns:repeat(3,46px);
+  gap:5px;
+}
+
+.controls button{
+  width:46px;
+  height:46px;
+  border-radius:13px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(6,11,21,.56);
+  color:rgba(255,255,255,.82);
+  backdrop-filter:blur(10px);
+  font-size:18px;
+}
+
+.controls .empty{
+  visibility:hidden;
+}
+
+@media(max-width:700px){
+
+  .controls{
+    display:grid;
+  }
+
+  .bottomHint{
+    bottom:16px;
+    right:14px;
+    left:auto;
+    transform:none;
+    text-align:right;
+  }
+
+  .logo span{
+    display:none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+<canvas id="canvas"></canvas>
+
+<div class="vignette"></div>
+
+<div class="topbar">
+
+  <div class="logo">
+    <strong>KAGE</strong>
+    <span>Le sanctuaire oublié</span>
+  </div>
+
+  <div class="progress">
+    <div class="orb" id="orb1"></div>
+    <div class="orb" id="orb2"></div>
+    <div class="orb" id="orb3"></div>
+  </div>
+
+</div>
+
+<div class="centerMessage" id="centerMessage">
+  <h1 id="messageTitle"></h1>
+  <p id="messageSubtitle"></p>
+</div>
+
+<div class="bottomHint">
+  ZQSD / WASD / FLÈCHES • Explore l'île
+</div>
+
+<div class="controls">
+  <div class="empty"></div>
+  <button data-key="ArrowUp">▲</button>
+  <div class="empty"></div>
+
+  <button data-key="ArrowLeft">◀</button>
+  <button data-key="ArrowDown">▼</button>
+  <button data-key="ArrowRight">▶</button>
+</div>
+
+<div class="startScreen" id="startScreen">
+
+  <div class="startCard">
+
+    <div class="kana">影 • かげ</div>
+
+    <h1>KAGE</h1>
+
+    <div class="subtitle">
+      Le sanctuaire oublié
+    </div>
+
+    <p>
+      Une petite île.<br>
+      Trois lumières.<br>
+      Une voyageuse bizarre.
+    </p>
+
+    <button class="startButton" id="startButton">
+      Entrer dans le monde
+    </button>
+
+    <p class="instructions">
+      Le son est activé au démarrage.
+    </p>
+
+  </div>
+
+</div>
+
+</div>
+
+<script>
+"use strict";
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const startScreen =
+  document.getElementById("startScreen");
+
+const startButton =
+  document.getElementById("startButton");
+
+const centerMessage =
+  document.getElementById("centerMessage");
+
+const messageTitle =
+  document.getElementById("messageTitle");
+
+const messageSubtitle =
+  document.getElementById("messageSubtitle");
+
+const orbUI = [
+  document.getElementById("orb1"),
+  document.getElementById("orb2"),
+  document.getElementById("orb3")
+];
+
+let width = 0;
+let height = 0;
+let dpr = 1;
+
+function resize(){
+
+  dpr = Math.min(
+    window.devicePixelRatio || 1,
+    2
+  );
+
+  width = window.innerWidth;
+  height = window.innerHeight;
+
+  canvas.width =
+    Math.floor(width * dpr);
+
+  canvas.height =
+    Math.floor(height * dpr);
+
+  canvas.style.width =
+    width + "px";
+
+  canvas.style.height =
+    height + "px";
+
+  ctx.setTransform(
+    dpr,
+    0,
+    0,
+    dpr,
+    0,
+    0
+  );
+}
+
+window.addEventListener(
+  "resize",
+  resize
+);
+
+resize();
+
+
+/* ==============================
+   AUDIO
+================================ */
+
+let audioContext = null;
+let masterGain = null;
+let ambientStarted = false;
+
+function initAudio(){
+
+  if(audioContext){
+
+    if(audioContext.state === "suspended"){
+      audioContext.resume();
+    }
+
+    return;
+  }
+
+  const AudioCtx =
+    window.AudioContext ||
+    window.webkitAudioContext;
+
+  if(!AudioCtx){
+    return;
+  }
+
+  audioContext = new AudioCtx();
+
+  masterGain =
+    audioContext.createGain();
+
+  masterGain.gain.value = 0.055;
+
+  masterGain.connect(
+    audioContext.destination
+  );
+}
+
+function playTone(
+  frequency,
+  duration = 0.15,
+  type = "sine",
+  volume = 0.25
+){
+
+  if(
+    !audioContext ||
+    !masterGain
+  ){
+    return;
+  }
+
+  const oscillator =
+    audioContext.createOscillator();
+
+  const gain =
+    audioContext.createGain();
+
+  oscillator.type = type;
+
+  oscillator.frequency.setValueAtTime(
+    frequency,
+    audioContext.currentTime
+  );
+
+  gain.gain.setValueAtTime(
+    0.0001,
+    audioContext.currentTime
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    volume,
+    audioContext.currentTime + 0.015
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    0.0001,
+    audioContext.currentTime + duration
+  );
+
+  oscillator.connect(gain);
+  gain.connect(masterGain);
+
+  oscillator.start();
+
+  oscillator.stop(
+    audioContext.currentTime +
+    duration +
+    0.02
+  );
+}
+
+function playPickup(){
+
+  playTone(
+    523.25,
+    0.16,
+    "sine",
+    0.24
+  );
+
+  setTimeout(() => {
+
+    playTone(
+      783.99,
+      0.25,
+      "sine",
+      0.20
+    );
+
+  }, 100);
+}
+
+function playUnlock(){
+
+  [
+    392,
+    523.25,
+    659.25,
+    783.99
+  ].forEach((frequency,index) => {
+
+    setTimeout(() => {
+
+      playTone(
+        frequency,
+        0.45,
+        "sine",
+        0.18
+      );
+
+    }, index * 120);
+
+  });
+}
+
+function playFootstep(){
+
+  if(!audioContext){
+    return;
+  }
+
+  playTone(
+    92,
+    0.045,
+    "triangle",
+    0.025
+  );
+}
+
+function startAmbient(){
+
+  if(
+    ambientStarted ||
+    !audioContext ||
+    !masterGain
+  ){
+    return;
+  }
+
+  ambientStarted = true;
+
+  const oscillator =
+    audioContext.createOscillator();
+
+  const gain =
+    audioContext.createGain();
+
+  oscillator.type = "sine";
+  oscillator.frequency.value = 92;
+
+  gain.gain.value = 0.012;
+
+  oscillator.connect(gain);
+  gain.connect(masterGain);
+
+  oscillator.start();
+
+  function pulse(){
+
+    playTone(
+      196,
+      0.9,
+      "sine",
+      0.022
+    );
+
+    setTimeout(() => {
+
+      playTone(
+        246.94,
+        0.8,
+        "sine",
+        0.016
+      );
+
+    },180);
+  }
+
+  pulse();
+
+  setInterval(
+    pulse,
+    5000
+  );
+}
+
+
+/* ==============================
+   GAME STATE
+================================ */
+
+const keys = new Set();
+
+const player = {
+
+  x: 0,
+  y: 3.1,
+
+  speed: 2.9,
+
+  bob: 0,
+
+  lastStep: 0
+
+};
+
+const shrine = {
+
+  x: 0,
+  y: -5.05
+
+};
+
+const spirits = [
+
+  {
+    x: -3.9,
+    y: 0.8,
+    collected: false,
+    phase: 0
+  },
+
+  {
+    x: 3.8,
+    y: -0.5,
+    collected: false,
+    phase: 2
+  },
+
+  {
+    x: -2.4,
+    y: -3.2,
+    collected: false,
+    phase: 4
+  }
+
+];
+
+const particles = [];
+
+let started = false;
+let finished = false;
+let ending = false;
+
+let time = 0;
+
+let cameraX = 0;
+let cameraY = 0;
+
+const trees = [
+
+  [-5.2,-2.2],
+  [-4.8,1.7],
+  [-3.9,2.8],
+
+  [4.6,1.5],
+  [5.1,-1.8],
+  [3.9,-3.2],
+
+  [-1.6,2.6],
+  [1.9,2.8],
+  [5.5,-3.7]
+
+];
+
+
+/* ==============================
+   INPUT
+================================ */
+
+function keyEvent(event,down){
+
+  const allowed = [
+
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+
+    "w",
+    "a",
+    "s",
+    "d",
+
+    "z",
+    "q"
+
+  ];
+
+  if(
+    allowed.includes(event.key)
+  ){
+
+    event.preventDefault();
+
+    if(down){
+      keys.add(event.key);
+    }else{
+      keys.delete(event.key);
+    }
+
+  }
+}
+
+window.addEventListener(
+  "keydown",
+  event => keyEvent(event,true)
+);
+
+window.addEventListener(
+  "keyup",
+  event => keyEvent(event,false)
+);
+
+document
+.querySelectorAll(".controls button")
+.forEach(button => {
+
+  const key =
+    button.dataset.key;
+
+  const down = event => {
+
+    event.preventDefault();
+
+    keys.add(key);
+  };
+
+  const up = () => {
+    keys.delete(key);
+  };
+
+  button.addEventListener(
+    "pointerdown",
+    down
+  );
+
+  button.addEventListener(
+    "pointerup",
+    up
+  );
+
+  button.addEventListener(
+    "pointercancel",
+    up
+  );
+
+  button.addEventListener(
+    "pointerleave",
+    up
+  );
+
+});
+
+
+/* ==============================
+   START
+================================ */
+
+startButton.addEventListener(
+  "click",
+  () => {
+
+    initAudio();
+
+    startAmbient();
+
+    started = true;
+
+    startScreen.classList.add(
+      "hide"
+    );
+
+    showMessage(
+      "Le sanctuaire attend",
+      "Trois lumières errent encore sur l'île."
+    );
+
+    playTone(
+      261.63,
+      0.4,
+      "sine",
+      0.17
+    );
+
+    setTimeout(
+      hideMessage,
+      3200
+    );
+
+  }
+);
+
+
+/* ==============================
+   UI
+================================ */
+
+function showMessage(
+  title,
+  subtitle
+){
+
+  messageTitle.textContent =
+    title;
+
+  messageSubtitle.textContent =
+    subtitle;
+
+  centerMessage.classList.add(
+    "show"
+  );
+}
+
+function hideMessage(){
+
+  centerMessage.classList.remove(
+    "show"
+  );
+}
+
+function updateOrbUI(){
+
+  spirits.forEach(
+    (spirit,index) => {
+
+      if(spirit.collected){
+
+        orbUI[index]
+          .classList.add("on");
+
+      }
+
+    }
+  );
+}
+
+
+/* ==============================
+   WORLD
+================================ */
+
+function worldToScreen(
+  x,
+  y
+){
+
+  const scale =
+    Math.min(
+      width,
+      height
+    ) / 15;
+
+  return {
+
+    x:
+      width / 2 +
+      (x - cameraX) *
+      scale,
+
+    y:
+      height * 0.54 +
+      (y - cameraY) *
+      scale *
+      0.78
+
+  };
+}
+
+function distance(
+  ax,
+  ay,
+  bx,
+  by
+){
+
+  return Math.hypot(
+    ax - bx,
+    ay - by
+  );
+}
+
+
+/* ==============================
+   PARTICLES
+================================ */
+
+function createParticle(
+  x,
+  y,
+  color,
+  count = 10
+){
+
+  for(
+    let i = 0;
+    i < count;
+    i++
+  ){
+
+    particles.push({
+
+      x,
+      y,
+
+      vx:
+        (Math.random() - 0.5)
+        * 1.2,
+
+      vy:
+        (Math.random() - 0.6)
+        * 1.1,
+
+      life: 1,
+
+      size:
+        Math.random() *
+        0.07 +
+        0.025,
+
+      color
+
+    });
+
+  }
+
+}
+
+function updateParticles(
+  delta
+){
+
+  for(
+    let i =
+      particles.length - 1;
+    i >= 0;
+    i--
+  ){
+
+    const p =
+      particles[i];
+
+    p.x +=
+      p.vx * delta;
+
+    p.y +=
+      p.vy * delta;
+
+    p.vy +=
+      0.06 * delta;
+
+    p.life -=
+      0.018 * delta;
+
+    if(p.life <= 0){
+
+      particles.splice(
+        i,
+        1
+      );
+
+    }
+
+  }
+
+}
+
+
+/* ==============================
+   SKY
+================================ */
+
+function drawSky(){
+
+  const gradient =
+    ctx.createLinearGradient(
+      0,
+      0,
+      0,
+      height
+    );
+
+  gradient.addColorStop(
+    0,
+    "#07101f"
+  );
+
+  gradient.addColorStop(
+    0.38,
+    "#142943"
+  );
+
+  gradient.addColorStop(
+    0.7,
+    "#354b68"
+  );
+
+  gradient.addColorStop(
+    1,
+    "#08121e"
+  );
+
+  ctx.fillStyle =
+    gradient;
+
+  ctx.fillRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+
+  /* Lune */
+
+  const moonX =
+    width * 0.76;
+
+  const moonY =
+    height * 0.19;
+
+  const radius =
+    Math.min(
+      width,
+      height
+    ) * 0.055;
+
+  ctx.shadowColor =
+    "rgba(255,230,181,.45)";
+
+  ctx.shadowBlur = 30;
+
+  ctx.fillStyle =
+    "#f5e2b2";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    moonX,
+    moonY,
+    radius,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+
+
+  /* Montagnes */
+
+  ctx.fillStyle =
+    "#111c2d";
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    0,
+    height * 0.58
+  );
+
+  for(
+    let x = 0;
+    x <= width;
+    x += 70
+  ){
+
+    const y =
+      height * 0.54 -
+      Math.sin(x * 0.005) * 30 -
+      Math.sin(x * 0.012) * 15;
+
+    ctx.lineTo(
+      x,
+      y
+    );
+
+  }
+
+  ctx.lineTo(
+    width,
+    height
+  );
+
+  ctx.lineTo(
+    0,
+    height
+  );
+
+  ctx.closePath();
+
+  ctx.fill();
+
+}
+
+
+/* ==============================
+   WATER
+================================ */
+
+function drawWater(){
+
+  ctx.fillStyle =
+    "#0a1b2a";
+
+  ctx.fillRect(
+    0,
+    height * 0.52,
+    width,
+    height * 0.48
+  );
+
+  for(
+    let i = 0;
+    i < 32;
+    i++
+  ){
+
+    const y =
+      height * 0.55 +
+      i * 18 +
+      Math.sin(
+        time * 0.0007 + i
+      ) * 3;
+
+    ctx.strokeStyle =
+      `rgba(
+        132,
+        177,
+        195,
+        ${0.045 + (i % 3) * 0.015}
+      )`;
+
+    ctx.lineWidth = 1;
+
+    for(
+      let x = -50;
+      x < width + 50;
+      x += 100
+    ){
+
+      const offset =
+        Math.sin(
+          i * 3.2 +
+          time * 0.0008
+        ) * 16;
+
+      ctx.beginPath();
+
+      ctx.moveTo(
+        x + offset,
+        y
+      );
+
+      ctx.quadraticCurveTo(
+        x + 25 + offset,
+        y - 4,
+        x + 50 + offset,
+        y
+      );
+
+      ctx.stroke();
+
+    }
+
+  }
+
+}
+
+
+/* ==============================
+   ISLAND
+================================ */
+
+function drawIsland(){
+
+  const p =
+    worldToScreen(
+      0,
+      -0.6
+    );
+
+  const scale =
+    Math.min(
+      width,
+      height
+    ) / 15;
+
+  const rx =
+    scale * 6;
+
+  const ry =
+    scale * 3.7;
+
+
+  /* Ombre */
+
+  ctx.fillStyle =
+    "rgba(0,0,0,.34)";
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x,
+    p.y + ry * .2,
+    rx * 1.04,
+    ry * .94,
+    0,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+
+  /* Plage */
+
+  ctx.fillStyle =
+    "#8e7759";
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x,
+    p.y,
+    rx,
+    ry,
+    0,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+
+  /* Herbe */
+
+  const grass =
+    ctx.createRadialGradient(
+      p.x - rx * .15,
+      p.y - ry * .2,
+      10,
+      p.x,
+      p.y,
+      rx
+    );
+
+  grass.addColorStop(
+    0,
+    "#315744"
+  );
+
+  grass.addColorStop(
+    .6,
+    "#1a3b31"
+  );
+
+  grass.addColorStop(
+    1,
+    "#10241f"
+  );
+
+  ctx.fillStyle =
+    grass;
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x,
+    p.y - scale * .12,
+    rx * .88,
+    ry * .78,
+    0,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+
+  /* Chemin */
+
+  ctx.strokeStyle =
+    "#7e6a50";
+
+  ctx.lineWidth =
+    scale * .62;
+
+  ctx.lineCap =
+    "round";
+
+  const start =
+    worldToScreen(
+      player.x,
+      player.y
+    );
+
+  const mid =
+    worldToScreen(
+      0,
+      -1.7
+    );
+
+  const end =
+    worldToScreen(
+      shrine.x,
+      shrine.y
+    );
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    start.x,
+    start.y
+  );
+
+  ctx.quadraticCurveTo(
+    mid.x,
+    mid.y,
+    end.x,
+    end.y
+  );
+
+  ctx.stroke();
+
+
+  ctx.lineWidth =
+    scale * .42;
+
+  ctx.strokeStyle =
+    "#5b4b3f";
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    start.x,
+    start.y
+  );
+
+  ctx.quadraticCurveTo(
+    mid.x,
+    mid.y,
+    end.x,
+    end.y
+  );
+
+  ctx.stroke();
+
+}
+
+
+/* ==============================
+   TREES
+================================ */
+
+function drawTree(
+  x,
+  y
+){
+
+  const p =
+    worldToScreen(
+      x,
+      y
+    );
+
+  const scale =
+    Math.min(
+      width,
+      height
+    ) / 15;
+
+  const sway =
+    Math.sin(
+      time * .001 +
+      x * 3
+    ) * 2;
+
+
+  ctx.fillStyle =
+    "#402c25";
+
+  ctx.fillRect(
+    p.x - scale * .11,
+    p.y - scale * .15,
+    scale * .22,
+    scale * .75
+  );
+
+
+  const layers = [
+
+    [-.55,.60],
+    [-.9,.47],
+    [-1.2,.33]
+
+  ];
+
+
+  layers.forEach(
+    (layer,index) => {
+
+      const gradient =
+        ctx.createRadialGradient(
+          p.x - 8,
+          p.y + layer[0] * scale,
+          2,
+          p.x,
+          p.y + layer[0] * scale,
+          layer[1] * scale
+        );
+
+      gradient.addColorStop(
+        0,
+        index === 0
+          ? "#39634e"
+          : "#2e5545"
+      );
+
+      gradient.addColorStop(
+        1,
+        "#10261f"
+      );
+
+      ctx.fillStyle =
+        gradient;
+
+      ctx.beginPath();
+
+      ctx.arc(
+        p.x +
+          sway *
+          (index + 1) *
+          .3,
+        p.y +
+          layer[0] *
+          scale,
+        layer[1] *
+          scale,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+
+    }
+  );
+
+}
+
+
+/* ==============================
+   LANTERNS
+================================ */
+
+function drawLantern(
+  x,
+  y
+){
+
+  const p =
+    worldToScreen(
+      x,
+      y
+    );
+
+  const scale =
+    Math.min(
+      width,
+      height
+    ) / 15;
+
+  const glow =
+    .52 +
+    Math.sin(
+      time * .004 +
+      x
+    ) * .12;
+
+
+  ctx.fillStyle =
+    "#463229";
+
+  ctx.fillRect(
+    p.x - 3,
+    p.y - scale * .25,
+    6,
+    scale * .55
+  );
+
+
+  ctx.shadowColor =
+    `rgba(
+      244,
+      199,
+      119,
+      ${glow}
+    )`;
+
+  ctx.shadowBlur = 22;
+
+  ctx.fillStyle =
+    "#f5c86d";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x,
+    p.y - scale * .25,
+    scale * .09,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+
+}
+
+/* ==============================
+   ESPRITS
+================================ */
+
+function drawSpirit(
+  spirit
+){
+
+  if(spirit.collected){
+    return;
+  }
+
+  const p =
+    worldToScreen(
+      spirit.x,
+      spirit.y
+    );
+
+  const scale =
+    Math.min(
+      width,
+      height
+    ) / 15;
+
+  const floating =
+    Math.sin(
+      time * .003 +
+      spirit.phase
+    ) *
+    scale *
+    .12;
+
+  const radius =
+    scale *
+    (
+      .13 +
+      Math.sin(
+        time * .005 +
+        spirit.phase
+      ) *
+      .015
+    );
+
+
+  ctx.shadowColor =
+    "rgba(173,230,255,.9)";
+
+  ctx.shadowBlur = 30;
+
+  ctx.fillStyle =
+    "#c4efff";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x,
+    p.y + floating,
+    radius,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+
+
+  ctx.fillStyle =
+    "rgba(255,255,255,.85)";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x - radius * .35,
+    p.y + floating - radius * .3,
+    radius * .25,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+
+  ctx.strokeStyle =
+    "rgba(177,224,255,.22)";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x,
+    p.y + floating,
+    radius * 2.2,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.stroke();
+
+}
+
+
+/* ==============================
+   PERSONNAGE
+================================ */
+
+function drawPlayer(){
+
+  const p =
+    worldToScreen(
+      player.x,
+      player.y
+    );
+
+  const scale =
+    Math.min(
+      width,
+      height
+    ) / 15;
+
+  const moving =
+    keys.size > 0 &&
+    started;
+
+  const bob =
+    moving
+      ? Math.sin(
+          time * .018
+        ) *
+        scale *
+        .035
+      : 0;
+
+
+  /* Ombre */
+
+  ctx.fillStyle =
+    "rgba(0,0,0,.32)";
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x,
+    p.y + scale * .25,
+    scale * .26,
+    scale * .11,
+    0,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+
+  /* Corps */
+
+  ctx.fillStyle =
+    "#1a2232";
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    p.x - scale * .23,
+    p.y - scale * .04 + bob
+  );
+
+  ctx.lineTo(
+    p.x + scale * .23,
+    p.y - scale * .04 + bob
+  );
+
+  ctx.lineTo(
+    p.x + scale * .33,
+    p.y + scale * .43 + bob
+  );
+
+  ctx.lineTo(
+    p.x - scale * .33,
+    p.y + scale * .43 + bob
+  );
+
+  ctx.closePath();
+
+  ctx.fill();
+
+
+  /* Veste / cape */
+
+  ctx.fillStyle =
+    "#a94350";
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    p.x - scale * .19,
+    p.y - scale * .04 + bob
+  );
+
+  ctx.lineTo(
+    p.x + scale * .19,
+    p.y - scale * .04 + bob
+  );
+
+  ctx.lineTo(
+    p.x + scale * .28,
+    p.y + scale * .39 + bob
+  );
+
+  ctx.lineTo(
+    p.x - scale * .28,
+    p.y + scale * .39 + bob
+  );
+
+  ctx.closePath();
+
+  ctx.fill();
+
+
+  /* Cou */
+
+  ctx.fillStyle =
+    "#9a664c";
+
+  ctx.fillRect(
+    p.x - scale * .06,
+    p.y - scale * .27 + bob,
+    scale * .12,
+    scale * .12
+  );
+
+
+  /* Visage */
+
+  ctx.fillStyle =
+    "#a96f53";
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    p.x,
+    p.y - scale * .43 + bob,
+    scale * .17,
+    scale * .19,
+    0,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+
+  /* Chevelure curly */
+
+  ctx.fillStyle =
+    "#111219";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x,
+    p.y - scale * .52 + bob,
+    scale * .21,
+    Math.PI,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+
+  const curls = [
+
+    [-.16,-.53,.095],
+    [-.08,-.63,.09],
+    [0,-.68,.10],
+    [.11,-.62,.10],
+    [.18,-.51,.085],
+    [-.20,-.42,.075],
+    [.20,-.42,.075]
+
+  ];
+
+
+  curls.forEach(
+    curl => {
+
+      ctx.beginPath();
+
+      ctx.arc(
+        p.x +
+          curl[0] * scale,
+        p.y +
+          curl[1] * scale +
+          bob,
+        curl[2] * scale,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+
+    }
+  );
+
+
+  /* Reflet cheveux */
+
+  ctx.fillStyle =
+    "#2a2630";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x - scale * .08,
+    p.y - scale * .64 + bob,
+    scale * .035,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+
+  /* Jambes */
+
+  ctx.fillStyle =
+    "#172033";
+
+  ctx.fillRect(
+    p.x - scale * .13,
+    p.y + scale * .38 + bob,
+    scale * .08,
+    scale * .22
+  );
+
+  ctx.fillRect(
+    p.x + scale * .05,
+    p.y + scale * .38 + bob,
+    scale * .08,
+    scale * .22
+  );
+
+
+  /* Petit talisman */
+
+  ctx.shadowColor =
+    "#f4cf78";
+
+  ctx.shadowBlur = 8;
+
+  ctx.fillStyle =
+    "#f4cf78";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    p.x + scale * .2,
+    p.y + scale * .05,
+    scale * .045,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+
+}
+
+
+/* ==============================
+   PARTICULES
+================================ */
+
+function drawParticles(){
+
+  particles.forEach(
+    particle => {
+
+      const screen =
+        worldToScreen(
+          particle.x,
+          particle.y
+        );
+
+      ctx.globalAlpha =
+        Math.max(
+          0,
+          particle.life
+        );
+
+      ctx.fillStyle =
+        particle.color;
+
+      ctx.beginPath();
+
+      ctx.arc(
+        screen.x,
+        screen.y,
+        Math.max(
+          1,
+          particle.size *
+          Math.min(
+            width,
+            height
+          )
+        ),
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+
+    }
+  );
+
+  ctx.globalAlpha = 1;
+
+}
+
+
+/* ==============================
+   GAMEPLAY
+================================ */
+
+function keepPlayerOnIsland(){
+
+  const distanceFromCenter =
+    Math.hypot(
+      player.x,
+      player.y + .6
+    );
+
+  if(
+    distanceFromCenter > 5.2
+  ){
+
+    const angle =
+      Math.atan2(
+        player.y + .6,
+        player.x
+      );
+
+    player.x =
+      Math.cos(angle) * 5.15;
+
+    player.y =
+      Math.sin(angle) * 5.15 - .6;
+
+  }
+
+}
+
+function collectNearbySpirits(){
+
+  spirits.forEach(
+    spirit => {
+
+      if(spirit.collected){
+        return;
+      }
+
+      const d =
+        distance(
+          player.x,
+          player.y,
+          spirit.x,
+          spirit.y
+        );
+
+      if(d < .55){
+
+        spirit.collected = true;
+
+        createParticle(
+          spirit.x,
+          spirit.y,
+          "#bfefff",
+          20
+        );
+
+        playPickup();
+
+        updateOrbUI();
+
+        const collected =
+          spirits.filter(
+            item =>
+              item.collected
+          ).length;
+
+        if(collected < 3){
+
+          showMessage(
+            "Une lumière retrouvée",
+            `${3 - collected} lumière${
+              3 - collected > 1
+                ? "s"
+                : ""
+            } restante${
+              3 - collected > 1
+                ? "s"
+                : ""
+            }.`
+          );
+
+          setTimeout(
+            hideMessage,
+            1600
+          );
+
+        }else{
+
+          showMessage(
+            "Les trois esprits sont réunis",
+            "Le sanctuaire reconnaît enfin ta présence."
+          );
+
+          playUnlock();
+
+          setTimeout(
+            hideMessage,
+            3000
+          );
+
+        }
+
+      }
+
+    }
+  );
+
+}
+
+function checkEnding(){
+
+  if(
+    ending ||
+    !spirits.every(
+      spirit =>
+        spirit.collected
+    )
+  ){
+    return;
+  }
+
+  const d =
+    distance(
+      player.x,
+      player.y,
+      shrine.x,
+      shrine.y
+    );
+
+  if(d < 1.1){
+
+    ending = true;
+    finished = true;
+
+    createParticle(
+      shrine.x,
+      shrine.y,
+      "#f4cf78",
+      70
+    );
+
+    playUnlock();
+
+    showMessage(
+      "Bienvenue",
+      "Le véritable voyage commence ici."
+    );
+
+    setTimeout(
+      () => {
+
+        showMessage(
+          "KAGE",
+          "Prototype terminé."
+        );
+
+      },
+      4200
+    );
+
+  }
+
+}
+
+
+/* ==============================
+   UPDATE
+================================ */
+
+let lastTime =
+  performance.now();
+
+function update(now){
+
+  const delta =
+    Math.min(
+      32,
+      now - lastTime
+    );
+
+  lastTime = now;
+
+  time += delta;
+
+
+  if(
+    started &&
+    !finished
+  ){
+
+    let dx = 0;
+    let dy = 0;
+
+
+    if(
+      keys.has("ArrowUp") ||
+      keys.has("w") ||
+      keys.has("z")
+    ){
+      dy -= 1;
+    }
+
+
+    if(
+      keys.has("ArrowDown") ||
+      keys.has("s")
+    ){
+      dy += 1;
+    }
+
+
+    if(
+      keys.has("ArrowLeft") ||
+      keys.has("a") ||
+      keys.has("q")
+    ){
+      dx -= 1;
+    }
+
+
+    if(
+      keys.has("ArrowRight") ||
+      keys.has("d")
+    ){
+      dx += 1;
+    }
+
+
+    if(dx || dy){
+
+      const length =
+        Math.hypot(
+          dx,
+          dy
+        );
+
+      dx /= length;
+      dy /= length;
+
+
+      const movement =
+        player.speed *
+        (delta / 1000);
+
+
+      player.x +=
+        dx * movement;
+
+      player.y +=
+        dy * movement;
+
+      player.bob +=
+        delta;
+
+
+      if(
+        now -
+        player.lastStep >
+        280
+      ){
+
+        playFootstep();
+
+        player.lastStep =
+          now;
+
+      }
+
+    }
+
+
+    keepPlayerOnIsland();
+
+    collectNearbySpirits();
+
+    checkEnding();
+
+  }
+
+
+  cameraX +=
+    (
+      player.x -
+      cameraX
+    ) * .06;
+
+  cameraY +=
+    (
+      player.y -
+      cameraY
+    ) * .06;
+
+
+  updateParticles(
+    delta
+  );
+
+
+  if(
+    started &&
+    Math.random() < .032
+  ){
+
+    particles.push({
+
+      x:
+        player.x +
+        (Math.random() - .5) * 9,
+
+      y:
+        player.y +
+        (Math.random() - .5) * 9,
+
+      vx:0,
+
+      vy:-.015,
+
+      life:1,
+
+      size:
+        .018 +
+        Math.random() * .02,
+
+      color:
+        "rgba(184,220,226,.45)"
+
+    });
+
+  }
+
+
+  draw();
+
+  requestAnimationFrame(
+    update
+  );
+}
+
+
+/* ==============================
+   RENDER
+================================ */
+
+function draw(){
+
+  drawSky();
+
+  drawWater();
+
+  drawIsland();
+
+
+  trees
+    .slice()
+    .sort(
+      (a,b) =>
+        a[1] - b[1]
+    )
+    .forEach(
+      tree =>
+        drawTree(
+          tree[0],
+          tree[1]
+        )
+    );
+
+
+  spirits.forEach(
+    drawSpirit
+  );
+
+
+  drawShrine();
+
+  drawPlayer();
+
+  drawParticles();
+
+
+  /* Brume */
+
+  const fog =
+    ctx.createLinearGradient(
+      0,
+      height * .38,
+      0,
+      height
+    );
+
+  fog.addColorStop(
+    0,
+    "rgba(150,185,200,0)"
+  );
+
+  fog.addColorStop(
+    1,
+    "rgba(120,160,175,.055)"
+  );
+
+  ctx.fillStyle =
+    fog;
+
+  ctx.fillRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+
+  /* Assombrissement périphérique */
+
+  const darkness =
+    ctx.createRadialGradient(
+      width / 2,
+      height / 2,
+      Math.min(
+        width,
+        height
+      ) * .15,
+      width / 2,
+      height / 2,
+      Math.max(
+        width,
+        height
+      ) * .75
+    );
+
+  darkness.addColorStop(
+    0,
+    "rgba(0,0,0,0)"
+  );
+
+  darkness.addColorStop(
+    1,
+    "rgba(0,0,0,.35)"
+  );
+
+  ctx.fillStyle =
+    darkness;
+
+  ctx.fillRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+}
+
+
+draw();
+
+requestAnimationFrame(
+  update
+);
+
+</script>
+</body>
+</html>
