@@ -305,7 +305,7 @@ canvas{
 </div>
 
 <div class="hint">
-  ZQSD • WASD • FLÈCHES • EXPLORE
+  '-'
 </div>
 
 <div class="controls">
@@ -349,15 +349,14 @@ canvas{
     <p>
       Une petite île.<br>
       Trois lumières perdues.<br>
-      Et une jeune voyageuse
-      que le sanctuaire semble attendre.
+      Et une jeune bizarre.
     </p>
 
     <button
       class="start-button"
       id="startButton"
     >
-      Entrer dans le monde
+      Entrer
     </button>
 
   </div>
@@ -1857,7 +1856,6 @@ function drawPlayer(){
   ctx.fill();
 
 
-  /* corps */
 
   ctx.fillStyle =
     "#b84e61";
@@ -1893,8 +1891,6 @@ function drawPlayer(){
   ctx.fill();
 
 
-  /* manches */
-
   ctx.fillStyle =
     "#a94155";
 
@@ -1927,8 +1923,6 @@ function drawPlayer(){
   ctx.fill();
 
 
-  /* cou */
-
   ctx.fillStyle =
     "#b77b5f";
 
@@ -1939,8 +1933,6 @@ function drawPlayer(){
     scale*.13
   );
 
-
-  /* visage */
 
   ctx.fillStyle =
     "#b98064";
@@ -1959,8 +1951,6 @@ function drawPlayer(){
 
   ctx.fill();
 
-
-  /* oreilles */
 
   ctx.beginPath();
 
@@ -1986,8 +1976,6 @@ function drawPlayer(){
 
   ctx.fill();
 
-
-  /* cheveux bouclés */
 
   ctx.fillStyle =
     "#111116";
@@ -2039,8 +2027,6 @@ function drawPlayer(){
   );
 
 
-  /* petites mèches */
-
   ctx.strokeStyle =
     "#211b22";
 
@@ -2083,8 +2069,6 @@ function drawPlayer(){
   ctx.stroke();
 
 
-  /* yeux */
-
   ctx.fillStyle =
     "#17151a";
 
@@ -2117,8 +2101,6 @@ function drawPlayer(){
   ctx.fill();
 
 
-  /* reflets des yeux */
-
   ctx.fillStyle =
     "#ffffff";
 
@@ -2147,8 +2129,6 @@ function drawPlayer(){
   ctx.fill();
 
 
-  /* nez */
-
   ctx.fillStyle =
     "rgba(110,66,55,.35)";
 
@@ -2164,8 +2144,6 @@ function drawPlayer(){
 
   ctx.fill();
 
-
-  /* petit sourire */
 
   ctx.strokeStyle =
     "#6e403c";
@@ -2186,7 +2164,6 @@ function drawPlayer(){
   ctx.stroke();
 
 
-  /* joues */
 
   ctx.fillStyle =
     "rgba(231,120,125,.23)";
@@ -2220,8 +2197,6 @@ function drawPlayer(){
   ctx.fill();
 
 
-  /* petit pendentif */
-
   ctx.shadowColor =
     "#f5ce77";
 
@@ -2245,11 +2220,6 @@ function drawPlayer(){
   ctx.shadowBlur = 0;
 
 }
-
-
-/* =========================
-   GAMEPLAY
-========================= */
 
 function keepInside(){
 
@@ -2411,10 +2381,6 @@ function checkEnding(){
 }
 
 
-/* =========================
-   UPDATE
-========================= */
-
 let last =
   performance.now();
 
@@ -2574,10 +2540,6 @@ function update(now){
 }
 
 
-/* =========================
-   RENDER
-========================= */
-
 function draw(){
 
   drawSky();
@@ -2614,8 +2576,6 @@ function draw(){
   particlesDraw();
 
 
-  /* brume */
-
   const fog =
     ctx.createLinearGradient(
       0,
@@ -2644,8 +2604,6 @@ function draw(){
     H
   );
 
-
-  /* vignette supplémentaire */
 
   const dark =
     ctx.createRadialGradient(
@@ -2679,10 +2637,6 @@ function draw(){
 
 }
 
-
-/* =========================
-   START GAME LOOP
-========================= */
 
 draw();
 
